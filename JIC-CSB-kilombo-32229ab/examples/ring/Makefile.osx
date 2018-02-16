@@ -13,7 +13,7 @@ EXECUTABLE=ring
 # Set it here, or as an environment variable in the shell:
 #      export KILOHEADERS=/your/path/  
 #
-#KILOHEADERS=
+#KILOHEADERS=../../kilolib
 
 # path of kilombo.h distributed with the simulator but needed
 # when compiling the user program
@@ -106,7 +106,7 @@ OBJECTS=$(SOURCES:.c=.o)
 
 #general rule for compiling a .c file to .o
 .c.o:
-	$(SIM_CC) $(SIM_CFLAGS) $< -o $@
+	$(SIM_CC) $(SIM_CFLAGS) -DSIMULATOR $< -o $@
 
 $(EXECUTABLE): $(OBJECTS) $(SIMLIB) 
 	$(SIM_CC)  $(SIM_LFLAGS) -o $@  $(OBJECTS) 
