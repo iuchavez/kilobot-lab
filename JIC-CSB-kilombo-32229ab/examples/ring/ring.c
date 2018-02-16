@@ -7,6 +7,7 @@
     #include "ring.h"
     USERDATA myData;
     USERDATA *mydata = &myData;
+    // Make sure that you add any vars into this data structure in header mydata
 #else
     #include <math.h>
     #include <kilombo.h>
@@ -305,6 +306,13 @@ void message_rx(message_t *m, distance_measurement_t *d)
             case MOVE:
                 recv_move(m->data);
                 break;
+            // Notes from professor
+            // case ELECTION:
+            //     receive_election();
+            //     data[ID] == myData->left{
+            //          recieve_election();    
+            //     }
+            // case ELECTED:
         
         }
     }
@@ -339,12 +347,28 @@ char enqueue_message(uint8_t m)
     return 0;
 }
 
+// This is from the professor
+// void send_election(){
+//     if(Initiator && !isQueueFull()){
+//         enqueue_message(ELECTION);
+//         Initiator = false;
+//     }
+// }
+
+void receive_election(){
+    //...
+    //forward
+    initiator = true;
+}
+
+
 /**********************************/
 /**********************************/
 void send_joining()
 {
     uint8_t i;
     /* precondition  */
+    // Notes from professor, this is the same thing as a guard
     
     if (mydata->state == AUTONOMOUS && is_stabilized()  && !isQueueFull())
 
@@ -492,6 +516,7 @@ void remove_neighbor(nearest_neighbor_t lost)
     mydata->num_neighbors--;
 }
 
+// Adam: this is where most of the code is being executed
 void loop()
 {
     delay(30);
