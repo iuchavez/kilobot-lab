@@ -355,11 +355,11 @@ char enqueue_message(uint8_t m)
 //     }
 // }
 
-void receive_election(){
-    //...
-    //forward
-    initiator = true;
-}
+// void receive_election(){
+//     //...
+//     //forward
+//     initiator = true;
+// }
 
 
 /**********************************/
