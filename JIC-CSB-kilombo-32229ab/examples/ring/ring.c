@@ -308,7 +308,7 @@ void message_rx(message_t *m, distance_measurement_t *d)
                 break;
             // FROM NOTES - mark
             case ELECTION:
-                if(mydata[ID] == mydata->left){
+                if(mydata[ID] == mydata->my_left){
                     receive_election();    
                 }
             // case ELECTED:
