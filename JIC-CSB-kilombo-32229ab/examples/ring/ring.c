@@ -306,12 +306,11 @@ void message_rx(message_t *m, distance_measurement_t *d)
             case MOVE:
                 recv_move(m->data);
                 break;
-            // Notes from professor
-            // case ELECTION:
-            //     receive_election();
-            //     data[ID] == myData->left{
-            //          recieve_election();    
-            //     }
+            // FROM NOTES - mark
+            case ELECTION:
+                if(data[ID] == myData->left){
+                    recieve_election();    
+                }
             // case ELECTED:
         
         }
@@ -333,6 +332,10 @@ char enqueue_message(uint8_t m)
         mydata->message[mydata->tail].data[RECEIVER] = mydata->my_right;
         mydata->message[mydata->tail].data[SENDER] = mydata->my_id;
         mydata->message[mydata->tail].data[STATE] = mydata->state;
+
+        //FROM NOTES - mark
+        mydata->message[mydata->tail].data[MIN_ID] = mydata->mid_id;
+
         //Sending Color Data 
 		mydata->message[mydata->tail].data[COLOR] = RGB(mydata->red,mydata->green,mydata->blue);
         //Sending Master Statues 
@@ -348,18 +351,16 @@ char enqueue_message(uint8_t m)
 }
 
 // This is from the professor
-// void send_election(){
-//     if(Initiator && !isQueueFull()){
-//         enqueue_message(ELECTION);
-//         Initiator = false;
-//     }
-// }
+void send_election(){
+    if(mydata->initiator && !isQueueFull() && mydata->state == COOPERATIVE){
+         enqueue_message(ELECTION);
+         mydata->initiator = false;
+     }
+ }
 
-// void receive_election(){
-//     //...
-//     //forward
-//     initiator = true;
-// }
+ void receive_election(){
+    mydata->initiator = true;
+}
 
 
 /**********************************/
@@ -383,6 +384,9 @@ void send_joining()
             mydata->my_right = mydata->nearest_neighbors[i].right_id;
             mydata->my_left = mydata->nearest_neighbors[i].id;
             enqueue_message(JOIN);
+
+            //FROM NOTES - mark
+            mydata->initiator = true;
 #ifdef SIMULATOR
             printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
 #endif
@@ -525,6 +529,9 @@ void loop()
     send_joining();
     send_sharing();
     move(mydata->now);
+
+    //FROM NOTES - mark
+    send_election();
 
     uint8_t i;
     for (i = 0; i < mydata->num_neighbors; i++)

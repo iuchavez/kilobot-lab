@@ -35,7 +35,8 @@ typedef enum { NULL_MSG,
     JOIN,
     LEAVE,
     MOVE
-    // Define ELECTION among these
+    ELECTION,
+    ELECTED
 } message_type;  // MESSAGES
 
 typedef enum {
@@ -75,6 +76,9 @@ typedef struct  {
 
 typedef struct
 {
+    //FROM NOTES - mark
+    uint8_t mid_id;
+
     uint8_t my_id;
     uint8_t my_right;
     uint8_t my_left;
