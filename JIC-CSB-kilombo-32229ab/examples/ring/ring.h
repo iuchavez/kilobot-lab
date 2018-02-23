@@ -12,6 +12,9 @@
 #define LEFT_ID  3
 #define STATE  4
 
+//FROM NOTES - mark
+#define MIN_ID 0
+
 #define RECEIVER 5
 #define SENDER 6
 #define COLOR 7
@@ -34,8 +37,9 @@ typedef enum { NULL_MSG,
     SHARE,
     JOIN,
     LEAVE,
-    MOVE
-    // Define ELECTION among these
+    MOVE,
+    ELECTION,
+    ELECTED
 } message_type;  // MESSAGES
 
 typedef enum {
@@ -75,6 +79,10 @@ typedef struct  {
 
 typedef struct
 {
+    //FROM NOTES - mark
+    uint8_t mid_id;
+    bool initiator;
+
     uint8_t my_id;
     uint8_t my_right;
     uint8_t my_left;
