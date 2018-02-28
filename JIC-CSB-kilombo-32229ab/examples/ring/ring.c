@@ -520,6 +520,21 @@ void remove_neighbor(nearest_neighbor_t lost)
 
 void election_process(){
     mydata->message[mydata->tail].data[MIN_ID] = mydata->mid_id;
+    if(mydata->state == COOPERATIVE && mydata->my_id == mydata->mid_id){
+        //I am the leader
+    }
+    else if(mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTION && mydata->my_id!= mydata->mid_id){
+        if(mydata->my_id>mydata->mid_id){
+            //You are the leader
+        }
+        else(mydata->my_id<mydata->mid_id){
+            //He is your leader
+        }
+    }
+    if((mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTED && mydata->my_id != mydata->mid_id){
+        //He is the leader
+    }
+
     //node sends electing(v) to successor
 //m = smallest ID of node
 //if node gets electing(other node)
