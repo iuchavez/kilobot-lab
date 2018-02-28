@@ -517,6 +517,24 @@ void remove_neighbor(nearest_neighbor_t lost)
     mydata->num_neighbors--;
 }
 
+
+void election_process(){
+    mydata->message[mydata->tail].data[MIN_ID] = mydata->mid_id;
+    //node sends electing(v) to successor
+//m = smallest ID of node
+//if node gets electing(other node)
+    //if node with other node < m
+        //node forwards electing(other node) clockwise and set other node to m
+        //node does not become leader
+    //else if other node > m and node is not participating
+     //   v sends electing(m) to successor
+    //else if node = other node
+      //  node sends elected(node) clockwise
+
+//if node gets elected(other node) with other node != node
+  //  node forward elected(other node) clockwise and leader = other node
+}
+
 // Adam: this is where most of the code is being executed
 void loop()
 {
