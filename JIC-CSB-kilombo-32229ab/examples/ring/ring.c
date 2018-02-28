@@ -285,6 +285,9 @@ void recv_move(uint8_t *payload)
     } */
 }
 
+ void receive_election(){
+    mydata->initiator = 1;
+}
 
 void message_rx(message_t *m, distance_measurement_t *d)
 {
@@ -308,7 +311,7 @@ void message_rx(message_t *m, distance_measurement_t *d)
                 break;
             // FROM NOTES - mark
             case ELECTION:
-                if(mydata[ID] == mydata->my_left){
+                if(mydata->message[mydata->tail].data[ID] == mydata->my_left){
                     receive_election();    
                 }
             // case ELECTED:
@@ -316,7 +319,6 @@ void message_rx(message_t *m, distance_measurement_t *d)
         }
     }
 }
-
 
 char enqueue_message(uint8_t m)
 {
@@ -354,14 +356,9 @@ char enqueue_message(uint8_t m)
 void send_election(){
     if(mydata->initiator && !isQueueFull() && mydata->state == COOPERATIVE){
          enqueue_message(ELECTION);
-         mydata->initiator = false;
+         mydata->initiator = 0;
      }
  }
-
- void receive_election(){
-    mydata->initiator = true;
-}
-
 
 /**********************************/
 /**********************************/
@@ -386,7 +383,7 @@ void send_joining()
             enqueue_message(JOIN);
 
             //FROM NOTES - mark
-            mydata->initiator = true;
+            mydata->initiator = 1;
 #ifdef SIMULATOR
             printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
 #endif

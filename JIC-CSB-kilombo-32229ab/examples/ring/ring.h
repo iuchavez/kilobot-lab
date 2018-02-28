@@ -81,7 +81,7 @@ typedef struct
 {
     //FROM NOTES - mark
     uint8_t mid_id;
-    bool initiator;
+    int8_t initiator;
 
     uint8_t my_id;
     uint8_t my_right;
