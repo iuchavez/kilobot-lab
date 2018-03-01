@@ -336,7 +336,7 @@ char enqueue_message(uint8_t m)
         mydata->message[mydata->tail].data[STATE] = mydata->state;
 
         //FROM NOTES - mark
-        mydata->message[mydata->tail].data[MIN_ID] = mydata->mid_id;
+        mydata->message[mydata->tail].data[MIN_ID] = mydata->min_id;
 
         //Sending Color Data 
 		mydata->message[mydata->tail].data[COLOR] = RGB(mydata->red,mydata->green,mydata->blue);
@@ -519,21 +519,21 @@ void remove_neighbor(nearest_neighbor_t lost)
 
 
 void election_process(){
-    mydata->message[mydata->tail].data[MIN_ID] = mydata->mid_id;
-    if(mydata->state == COOPERATIVE && mydata->my_id == mydata->mid_id){
+    mydata->message[mydata->tail].data[MIN_ID] = mydata->min_id;
+    if(mydata->state == COOPERATIVE && mydata->my_id == mydata->min_id){
         //I am the leader
         receive_election();
     }
-    else if(mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTION && mydata->my_id!= mydata->mid_id){
-        if(mydata->my_id > mydata->mid_id){
+    else if(mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTION && mydata->my_id!= mydata->min_id){
+        if(mydata->my_id > mydata->min_id){
             //You are the leader
         }
-        else(mydata->my_id < mydata->mid_id){
+        else(mydata->my_id < mydata->min_id){
             //He is your leader
             send_election();
         }
     }
-    if((mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTED && mydata->my_id != mydata->mid_id){
+    if((mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTED && mydata->my_id != mydata->min_id){
         //He is the leader
     }
 
