@@ -285,7 +285,7 @@ void recv_move(uint8_t *payload)
     } */
 }
 
- void receive_election(){
+ void receive_election(int ID){
     mydata->initiator = 1;
 }
 
@@ -353,7 +353,7 @@ char enqueue_message(uint8_t m)
 }
 
 // This is from the professor
-void send_election(){
+void send_election(int ID){
     if(mydata->initiator && !isQueueFull() && mydata->state == COOPERATIVE){
          enqueue_message(ELECTION);
          mydata->initiator = 0;
@@ -522,13 +522,15 @@ void election_process(){
     mydata->message[mydata->tail].data[MIN_ID] = mydata->mid_id;
     if(mydata->state == COOPERATIVE && mydata->my_id == mydata->mid_id){
         //I am the leader
+        receive_election();
     }
     else if(mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTION && mydata->my_id!= mydata->mid_id){
-        if(mydata->my_id>mydata->mid_id){
+        if(mydata->my_id > mydata->mid_id){
             //You are the leader
         }
-        else(mydata->my_id<mydata->mid_id){
+        else(mydata->my_id < mydata->mid_id){
             //He is your leader
+            send_election();
         }
     }
     if((mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTED && mydata->my_id != mydata->mid_id){
@@ -545,7 +547,7 @@ void election_process(){
      //   v sends electing(m) to successor
     //else if node = other node
       //  node sends elected(node) clockwise
-
+`
 //if node gets elected(other node) with other node != node
   //  node forward elected(other node) clockwise and leader = other node
 }

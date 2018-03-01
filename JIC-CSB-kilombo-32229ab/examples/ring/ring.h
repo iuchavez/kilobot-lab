@@ -12,9 +12,6 @@
 #define LEFT_ID  3
 #define STATE  4
 
-//FROM NOTES - mark
-#define MIN_ID 0
-
 #define RECEIVER 5
 #define SENDER 6
 #define COLOR 7
@@ -80,7 +77,7 @@ typedef struct  {
 typedef struct
 {
     //FROM NOTES - mark
-    uint8_t mid_id; //m from notes
+    uint8_t min_id; //m from notes
     int8_t initiator;
 
     uint8_t my_id;
