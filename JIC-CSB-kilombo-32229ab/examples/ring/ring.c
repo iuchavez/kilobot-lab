@@ -518,6 +518,17 @@ void remove_neighbor(nearest_neighbor_t lost)
 }
 
 
+void electing(uint8_t node_id){
+    elected(node_id);
+    //possibly do something with other nodes
+}
+
+void elected(uint8_t node_id){
+    if(mydata->my_id == node_id)
+        payload[MASTER] = mydata->my_id;
+
+}
+
 void election_process(){
     //node sends electing(v) to successor
     mydata->message[mydata->min_id] = mydata->my_id;
