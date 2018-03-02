@@ -519,37 +519,31 @@ void remove_neighbor(nearest_neighbor_t lost)
 
 
 void election_process(){
+    //node sends electing(v) to successor
     mydata->message[mydata->min_id] = mydata->my_id;
+    
+        //else if node = other node
     if(mydata->state == COOPERATIVE && mydata->my_id == mydata->min_id){
-        //I am the leader
-        receive_election();
-    }
-    else if(mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTION && mydata->my_id!= mydata->min_id){
-        if(mydata->my_id < mydata->min_id){
-            //You are the leader
-        }
-        else(mydata->my_id > mydata->min_id){
-            //He is your leader
-            send_election();
-        }
-    }
-    if((mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTED && mydata->my_id != mydata->min_id){
-        //He is the leader
+      //  node sends elected(node) clockwise
     }
 
-    //node sends electing(v) to successor
-//m = smallest ID of node
-//if node gets electing(other node)
-    //if node with other node < m
+    //if node gets electing(other node)
+    else if(mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTION && mydata->my_id!= mydata->min_id){
+        //if node with other node < m
+        if(mydata->my_id < mydata->min_id){
         //node forwards electing(other node) clockwise and set other node to m
         //node does not become leader
-    //else if other node > m and node is not participating
+        }
+        //else if other node > m and node is not participating
+        else(mydata->my_id > mydata->min_id){
      //   v sends electing(m) to successor
-    //else if node = other node
-      //  node sends elected(node) clockwise
-`
-//if node gets elected(other node) with other node != node
+        }
+    }
+
+    //if node gets elected(other node) with other node != node
+    if((mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTED && mydata->my_id != mydata->min_id){
   //  node forward elected(other node) clockwise and leader = other node
+    }
 }
 
 // Adam: this is where most of the code is being executed
