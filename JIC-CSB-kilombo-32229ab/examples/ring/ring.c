@@ -523,16 +523,19 @@ void remove_neighbor(nearest_neighbor_t lost)
 // Adam: this is where most of the code is being executed
 void loop()
 {
-    delay(30);
-    
-    //send_move();
-    send_joining();
-    send_sharing();
-    move(mydata->now);
+    /*
+     * If lonely
+     * search for other
+     *  other search for receiving
+     * joiner initiate send election
+     * How is isIntiator handeled if send joining doesn't give anything back?
+     */
+    if(mydata->loneliness>2){
+        send_joining();
+        if(mydata->loneliness==0){
 
-    //FROM NOTES - mark
-    send_election();
-
+        }
+    }
     uint8_t i;
     for (i = 0; i < mydata->num_neighbors; i++)
     {
