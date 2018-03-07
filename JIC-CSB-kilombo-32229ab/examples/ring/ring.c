@@ -308,7 +308,7 @@ void message_rx(message_t *m, distance_measurement_t *d)
                 break;
             // FROM NOTES - mark
             case ELECTION:
-                if(mydata->my_id == mydata->my_left){
+                if(mydata->my_id != mydata->my_left){
                     receive_election();    
                 }
             // case ELECTED:
@@ -530,11 +530,12 @@ void loop()
      * joiner initiate send election
      * How is isIntiator handeled if send joining doesn't give anything back?
      */
-    if(mydata->loneliness!=0){
+    if(mydata->loneliness>0){
         send_joining();
-        printf("%d is sending a JOIN\n", mydata->my_id);
+        printf("%d isInitor: %d \n", mydata->my_id, mydata->isInitiator);
         if(mydata->loneliness==0){  //If(it finds someone)
-            send_sharing(mydata);
+            // recv_joining(mydata);
+            send_sharing();
         }
         else{
             //I am my own leader
@@ -546,26 +547,20 @@ void loop()
         }
     }
     else{   //else it is already part of a group.
-        if (mydata->master==FALSE)
+        if (mydata->isInitiator==FALSE)
         {
-            printf("%d is not master.", mydata->my_id);
-            if ()
-            {
-                mydata->red = 0;
-                mydata->green = 3;
-            }
+            printf("%d is not master.\n", mydata->my_id);
+            mydata->red = 0;
+            mydata->green = 3;
         }
-        else if (mydata->master==TRUE)
+        else
         {
-            printf("%d is the master.", mydata->my_id);
-            if (mydata->now % 100 == 0)
-            {
-                mydata->red = 3;
-                mydata->green = 0;
-            }
+            printf("%d is the master.\n", mydata->my_id);
+            mydata->red = 3;
+            mydata->green = 0;
+        }
+        set_color(RGB(mydata->red, mydata->green, mydata->blue));
 
-            set_color(RGB(mydata->red, mydata->green, mydata->blue));
-        }
     }
 
     uint8_t i;
