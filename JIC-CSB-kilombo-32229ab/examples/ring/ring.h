@@ -27,6 +27,9 @@
 
 #define QUEUE 2
 
+#define TRUE 1
+#define FALSE 0
+
 
 
 #ifndef M_PI
@@ -81,7 +84,7 @@ typedef struct
 {
     //FROM NOTES - mark
     uint8_t mid_id;
-    uint8_t initiator;
+    uint8_t isInitiator;
 
     uint8_t my_id;
     uint8_t my_right;

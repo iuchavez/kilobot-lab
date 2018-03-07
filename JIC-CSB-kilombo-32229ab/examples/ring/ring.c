@@ -308,7 +308,7 @@ void message_rx(message_t *m, distance_measurement_t *d)
                 break;
             // FROM NOTES - mark
             case ELECTION:
-                if(mydata[ID] == mydata->my_left){
+                if(mydata->my_id == mydata->my_left){
                     receive_election();    
                 }
             // case ELECTED:
@@ -352,14 +352,14 @@ char enqueue_message(uint8_t m)
 
 // This is from the professor
 void send_election(){
-    if(mydata->initiator && !isQueueFull() && mydata->state == COOPERATIVE){
+    if(mydata->isInitiator == TRUE && !isQueueFull() && mydata->state == COOPERATIVE){
          enqueue_message(ELECTION);
-         mydata->initiator = false;
+         mydata->isInitiator = FALSE;
      }
  }
 
  void receive_election(){
-    mydata->initiator = true;
+    mydata->isInitiator = TRUE; //What is up with this line?
 }
 
 
@@ -386,7 +386,7 @@ void send_joining()
             enqueue_message(JOIN);
 
             //FROM NOTES - mark
-            mydata->initiator = true;
+            mydata->isInitiator = TRUE;
 #ifdef SIMULATOR
             printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
 #endif
@@ -530,50 +530,58 @@ void loop()
      * joiner initiate send election
      * How is isIntiator handeled if send joining doesn't give anything back?
      */
-    if(mydata->loneliness>2){
+    if(mydata->loneliness!=0){
         send_joining();
-        if(mydata->loneliness==0){
-
+        printf("%d is sending a JOIN\n", mydata->my_id);
+        if(mydata->loneliness==0){  //If(it finds someone)
+            send_sharing(mydata);
+        }
+        else{
+            //I am my own leader
+            mydata->loneliness++;            
+            if (mydata->loneliness > 100)
+            {
+                reset_self();
+            }
         }
     }
-    uint8_t i;
-    for (i = 0; i < mydata->num_neighbors; i++)
-    {
-        mydata->nearest_neighbors[i].message_recv_delay++;
-
-        if (mydata->nearest_neighbors[i].message_recv_delay > 100)
+    else{   //else it is already part of a group.
+        if (mydata->master==FALSE)
         {
-            remove_neighbor(mydata->nearest_neighbors[i]);
-            break;
+            printf("%d is not master.", mydata->my_id);
+            if ()
+            {
+                mydata->red = 0;
+                mydata->green = 3;
+            }
         }
-    } 
+        else if (mydata->master==TRUE)
+        {
+            printf("%d is the master.", mydata->my_id);
+            if (mydata->now % 100 == 0)
+            {
+                mydata->red = 3;
+                mydata->green = 0;
+            }
+
+            set_color(RGB(mydata->red, mydata->green, mydata->blue));
+        }
+    }
+
+    uint8_t i;
+    // for (i = 0; i < mydata->num_neighbors; i++)
+    // {
+    //     mydata->nearest_neighbors[i].message_recv_delay++;
+
+    //     if (mydata->nearest_neighbors[i].message_recv_delay > 100)
+    //     {
+    //         remove_neighbor(mydata->nearest_neighbors[i]);
+    //         break;
+    //     }
+    // } 
 
     // Master bot color switching
-    if (mydata->red == 3)
-    {
-        if (mydata->now % 100 == 0)
-        {
-            mydata->red = 0;
-            mydata->green = 3;
-        }
-    }
-    else if (mydata->red == 0 && mydata->master == 1)
-    {
-        if (mydata->now % 100 == 0)
-        {
-            mydata->red = 3;
-            mydata->green = 0;
-        }
-    }
-    
-    set_color(RGB(mydata->red, mydata->green, mydata->blue));
 
-    mydata->loneliness++;
-    
-    if (mydata->loneliness > 100)
-    {
-        reset_self();
-    }
     mydata->now++;
 }
 
