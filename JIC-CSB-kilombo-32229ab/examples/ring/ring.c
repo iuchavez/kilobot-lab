@@ -412,7 +412,7 @@ void send_election(){
         {
         	enqueue_message(ELECTION); // v forwards election message of w to clockwise neighbor
         }
-        else if (mydata->my_id == m.my_id)
+        else if (mydata->my_id == m->my_id)
         {
         	enqueue_message(ELECTED); // v forwards elected message of w to clockwise neighbor
         }    
