@@ -294,7 +294,7 @@ void message_rx(message_t *m, distance_measurement_t *d)
     {
         
 #ifdef SIMULATOR
-        printf("%d Receives %d %d\n", mydata->my_id,  m->data[MSG], m->data[RECEIVER]);
+        //printf("%d Receives %d %d\n", mydata->my_id,  m->data[MSG], m->data[RECEIVER]);
 #endif
    
         recv_sharing(m->data, dist);
@@ -311,11 +311,10 @@ void message_rx(message_t *m, distance_measurement_t *d)
             
             // Notes from professor
             case ELECTION:
-                printf("The ELECTION case");
+                printf("The ELECTION case\n");
                 // receive_election();
             //     data[ID] == myData->left{
-            //          recieve_election();    
-                // }
+                receive_election();                // }
                 break;
             // case ELECTED:
             default:
@@ -359,14 +358,13 @@ void send_election(){
     // can probably get rid of guard for testing - Adam
     // if(!isQueueFull() && mydata->state == COOPERATIVE){
          enqueue_message(ELECTION);
-         printf("Sending an Election\n");
          mydata->isInitiator = FALSE;
     //  ç}
  }
 
  void receive_election(){
-    printf("We are reaching rcv_Elecction\n");
-    if(mydata->my_id){}
+    printf("%d receiving Election\n", mydata->my_id);
+    // if(mydata->my_id){}
 }
 
 // This is from the professor
@@ -541,18 +539,7 @@ void remove_neighbor(nearest_neighbor_t lost)
     mydata->num_neighbors--;
 }
 
-// Adam: this is where most of the code is being executed
-void loop()
-{
-    delay(30);
-    
-    //send_move();
-    send_joining();
-    send_sharing();
-    send_election();
-
-    move(mydata->now);
-
+void updateNeighbors(){
     uint8_t i;
     for (i = 0; i < mydata->num_neighbors; i++)
     {
@@ -564,6 +551,28 @@ void loop()
             break;
         }
     } 
+}
+
+// Adam: this is where most of the code is being executed
+void loop()
+{
+    
+    //send_move();
+    if(mydata->loneliness>0 && mydata->num_neighbors<1){
+        // printf("%d sent a JOIN\n", mydata->my_id);
+        send_joining();
+        //if(mydata->num_neighbors>0){
+        send_election();
+        printf("%d sending ELECTION\n", mydata->my_id);
+        //}
+        
+    }
+
+    send_sharing();
+    move(mydata->now);
+
+    //just moved code to a separate function
+    updateNeighbors();
 
     // Master bot color switching
     if (mydata->red == 3)

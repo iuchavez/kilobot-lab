@@ -4,6 +4,7 @@
 #define SHARING_TIME 10
 #define TOKEN_TIME 103
 
+//Boolean Values
 #define TRUE 1
 #define FALSE 0 
 
