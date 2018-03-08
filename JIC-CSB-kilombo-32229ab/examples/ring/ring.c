@@ -301,19 +301,26 @@ void message_rx(message_t *m, distance_measurement_t *d)
         switch (m->data[MSG])
         {
             case JOIN:
+                printf("The JOIN case");
                 recv_joining(m->data);
                 break;
             case MOVE:
+                printf("The MOVE case");
                 recv_move(m->data);
                 break;
+            
             // Notes from professor
-            // case ELECTION:
-            //     receive_election();
+            case ELECTION:
+                printf("The ELECTION case");
+                // receive_election();
             //     data[ID] == myData->left{
             //          recieve_election();    
-            //     }
+                // }
+                break;
             // case ELECTED:
-        
+            default:
+                printf("The DEFAULT case");
+                break;
         }
     }
 }
