@@ -386,11 +386,13 @@ void send_election(){
 //     //possibly do something with other nodes
 // }
 
-// void elected(uint8_t node_id){
-//     if(mydata->my_id == node_id)
-//         payload[MASTER] = mydata->my_id;
-
-// }
+ void elected(message_t *m){
+     if(mydata->state == COOPERATIVE && m->data[STATE] == COOPERATIVE && m->data[MSG]==ELECTED){
+         mydata->min_id = m->data[SENDER];
+         mydata->master = 0;
+         enqueue_message(ELECTED);
+    }
+}
 
 //mydata - v
 //m - w
@@ -412,14 +414,15 @@ void send_election(){
         {
         	enqueue_message(ELECTION); // v forwards election message of w to clockwise neighbor
         }
-        else if (mydata->my_id == m.my_id)
+        else if (mydata->my_id == m->data[ID])
         {
         	enqueue_message(ELECTED); // v forwards elected message of w to clockwise neighbor
         }    
+    }
     if (mydata->state == m->data[STATE] && m->data[MSG]==ELECTED)
     {
     	enqueue_message(ELECTED); // v forwards elected message of w to clockwise neighbor
-    	mydata->master = m->my_id;
+    	mydata->master = m->data[ID];
     }
 }
 
