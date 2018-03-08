@@ -294,7 +294,7 @@ void message_rx(message_t *m, distance_measurement_t *d)
     {
         
 #ifdef SIMULATOR
-        //printf("%d Receives %d %d\n", mydata->my_id,  m->data[MSG], m->data[RECEIVER]);
+        printf("%d Receives %d %d\n", mydata->my_id,  m->data[MSG], m->data[RECEIVER]);
 #endif
    
         recv_sharing(m->data, dist);
@@ -352,6 +352,21 @@ char enqueue_message(uint8_t m)
         return 1;
     }
     return 0;
+}
+
+void send_election(){
+    //mydata->isInitiator == TRUE && 
+    // can probably get rid of guard for testing - Adam
+    // if(!isQueueFull() && mydata->state == COOPERATIVE){
+         enqueue_message(ELECTION);
+         printf("Sending an Election\n");
+         mydata->isInitiator = FALSE;
+    //  ç}
+ }
+
+ void receive_election(){
+    printf("We are reaching rcv_Elecction\n");
+    if(mydata->my_id){}
 }
 
 // This is from the professor
@@ -534,6 +549,8 @@ void loop()
     //send_move();
     send_joining();
     send_sharing();
+    send_election();
+
     move(mydata->now);
 
     uint8_t i;

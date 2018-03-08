@@ -4,6 +4,8 @@
 #define SHARING_TIME 10
 #define TOKEN_TIME 103
 
+#define TRUE 1
+#define FALSE 0 
 
 //PAYLOAD
 #define MSG 0
