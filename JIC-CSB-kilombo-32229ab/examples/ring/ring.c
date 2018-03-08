@@ -390,6 +390,9 @@ void send_joining()
             mydata->my_right = mydata->nearest_neighbors[i].right_id;
             mydata->my_left = mydata->nearest_neighbors[i].id;
             enqueue_message(JOIN);
+            //FROM NOTES - mark
+            mydata->isInitiator = TRUE;
+
 #ifdef SIMULATOR
             printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
 #endif
