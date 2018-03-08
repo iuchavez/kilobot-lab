@@ -380,7 +380,44 @@ void send_election(){
 //     //forward
 //     initiator = true;
 // }
+// void electing(uint8_t node_id){
+//     elected(node_id);
+//     //possibly do something with other nodes
+// }
 
+// void elected(uint8_t node_id){
+//     if(mydata->my_id == node_id)
+//         payload[MASTER] = mydata->my_id;
+
+// }
+
+// void election_process(){
+//     //node sends electing(v) to successor
+//     mydata->message[mydata->min_id] = mydata->my_id;
+    
+//         //else if node = other node
+//     if(mydata->state == COOPERATIVE && mydata->my_id == mydata->min_id){
+//       //  node sends elected(node) clockwise
+//     }
+
+//     //if node gets electing(other node)
+//     else if(mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTION && mydata->my_id!= mydata->min_id){
+//         //if node with other node < m
+//         if(mydata->my_id < mydata->min_id){
+//         //node forwards electing(other node) clockwise and set other node to m
+//         //node does not become leader
+//         }
+//         //else if other node > m and node is not participating
+//         else(mydata->my_id > mydata->min_id){
+//      //   v sends electing(m) to successor
+//         }
+//     }
+
+//     //if node gets elected(other node) with other node != node
+//     if((mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTED && mydata->my_id != mydata->min_id){
+//   //  node forward elected(other node) clockwise and leader = other node
+//     }
+// }
 
 /**********************************/
 /**********************************/
