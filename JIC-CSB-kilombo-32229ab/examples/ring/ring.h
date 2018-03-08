@@ -34,7 +34,8 @@ typedef enum { NULL_MSG,
     SHARE,
     JOIN,
     LEAVE,
-    MOVE
+    MOVE,
+    ELECTION
     // Define ELECTION among these
 } message_type;  // MESSAGES
 
@@ -75,6 +76,8 @@ typedef struct  {
 
 typedef struct
 {
+    uint8_t min_id;
+    uint8_t isInitiator;
     uint8_t my_id;
     uint8_t my_right;
     uint8_t my_left;
