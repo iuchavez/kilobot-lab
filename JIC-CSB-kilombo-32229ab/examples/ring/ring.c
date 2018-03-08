@@ -530,54 +530,46 @@ void loop()
      * joiner initiate send election
      * How is isIntiator handeled if send joining doesn't give anything back?
      */
-    if(mydata->loneliness>0){
+    printf("Neighbors: %d\n", mydata->num_neighbors);
+    if(mydata->loneliness>0 || mydata->num_neighbors<1){
+        printf("%d sent a JOIN\n", mydata->my_id);
         send_joining();
-        printf("%d isInitor: %d \n", mydata->my_id, mydata->isInitiator);
-        if(mydata->loneliness==0){  //If(it finds someone)
-            // recv_joining(mydata);
-            send_sharing();
-        }
-        else{
-            //I am my own leader
-            mydata->loneliness++;            
-            if (mydata->loneliness > 100)
-            {
-                reset_self();
-            }
-        }
+        // if(loneliness>100){
+        //     //I am my own leader.
+        // }
     }
     else{   //else it is already part of a group.
-        if (mydata->isInitiator==FALSE)
-        {
-            printf("%d is not master.\n", mydata->my_id);
-            mydata->red = 0;
-            mydata->green = 3;
-        }
-        else
-        {
-            printf("%d is the master.\n", mydata->my_id);
-            mydata->red = 3;
-            mydata->green = 0;
-        }
-        set_color(RGB(mydata->red, mydata->green, mydata->blue));
-
+        // printf("&%d is joined with %d and %d\n", mydata->my_id, mydata->my_left, mydata->my_right);
+        printf("%d sent a share\n", mydata->my_id);
+        send_sharing();
     }
+    if (mydata->master==FALSE)
+    {
+        mydata->red = 3;
+        mydata->green = 0;
+    }
+    else
+    {
+        mydata->red = 0;
+        mydata->green = 3;
+    }
+    set_color(RGB(mydata->red, mydata->green, mydata->blue));
+
 
     uint8_t i;
-    // for (i = 0; i < mydata->num_neighbors; i++)
-    // {
-    //     mydata->nearest_neighbors[i].message_recv_delay++;
-
-    //     if (mydata->nearest_neighbors[i].message_recv_delay > 100)
-    //     {
-    //         remove_neighbor(mydata->nearest_neighbors[i]);
-    //         break;
-    //     }
-    // } 
-
-    // Master bot color switching
 
     mydata->now++;
+    /**
+     * Get nearest neightbors
+     * if nearest neighrbor doesnt exist increment loneliness.
+     **/
+    if(mydata->num_neighbors==0){
+        printf("%d incr. loneliness\n", mydata->my_id);
+        mydata->loneliness++;
+        send_sharing();
+    }else{
+        printf("%d has neighbor\n", mydata->my_id);
+    }
 }
 
 
