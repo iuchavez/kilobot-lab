@@ -246,10 +246,11 @@ void recv_joining(uint8_t *payload)
 
     // Creates a "master" bot upon ring creation. 
     // Also boolean switch for master
-    if (mydata->my_left == mydata->my_right && mydata->my_id < payload[SENDER])
+    if (mydata->my_left == mydata->my_right && mydata->my_id <= payload[SENDER])
     {
 		mydata->red = 3;
         mydata->master = 1;
+        set_color(RGB(mydata->red, mydata->green, mydata->blue));
     }
 #ifdef SIMULATOR
     printf("%d Left: %d Right: %d\n", mydata->my_id, mydata->my_left, mydata->my_right);
@@ -294,9 +295,9 @@ void message_rx(message_t *m, distance_measurement_t *d)
     {
         
 #ifdef SIMULATOR
-        //printf("%d Receives %d %d\n", mydata->my_id,  m->data[MSG], m->data[RECEIVER]);
+        printf("%d Receives %d %d\n", mydata->my_id,  m->data[MSG], m->data[RECEIVER]);
 #endif
-   
+        //113 receiving 248 from 72
         recv_sharing(m->data, dist);
         switch (m->data[MSG])
         {
@@ -308,9 +309,11 @@ void message_rx(message_t *m, distance_measurement_t *d)
                 break;
             // FROM NOTES - mark
             case ELECTION:
-                if(mydata->my_id != mydata->my_left){
+                printf("An election is being called!\n");
+//                if(mydata->my_id != mydata->my_left){
                     receive_election();    
-                }
+                break;
+        //}              
             // case ELECTED:
         
         }
@@ -352,14 +355,17 @@ char enqueue_message(uint8_t m)
 
 // This is from the professor
 void send_election(){
-    if(mydata->isInitiator == TRUE && !isQueueFull() && mydata->state == COOPERATIVE){
+    //mydata->isInitiator == TRUE && 
+    if(!isQueueFull() && mydata->state == COOPERATIVE){
          enqueue_message(ELECTION);
-         mydata->isInitiator = FALSE;
+         printf("Sending an Election\n");
+         mydata->isInitiator = TRUE;
      }
  }
 
  void receive_election(){
-    mydata->isInitiator = TRUE; //What is up with this line?
+    printf("We are reaching rcv_Elecction\n");
+    if(mydata->my_id){}
 }
 
 
@@ -530,29 +536,27 @@ void loop()
      * joiner initiate send election
      * How is isIntiator handeled if send joining doesn't give anything back?
      */
-    printf("Neighbors: %d\n", mydata->num_neighbors);
+    // printf("%d Neighbors: %d\n", mydata->my_id, mydata->num_neighbors);
     if(mydata->loneliness>0 || mydata->num_neighbors<1){
-        printf("%d sent a JOIN\n", mydata->my_id);
+        // printf("%d sent a JOIN\n", mydata->my_id);
         send_joining();
+        //if(mydata->num_neighbors>0){
+            send_election();
+        //}
         // if(loneliness>100){
         //     //I am my own leader.
         // }
     }
     else{   //else it is already part of a group.
         // printf("&%d is joined with %d and %d\n", mydata->my_id, mydata->my_left, mydata->my_right);
-        printf("%d sent a share\n", mydata->my_id);
+        // printf("%d sent a share\n", mydata->my_id);
         send_sharing();
     }
-    if (mydata->master==FALSE)
-    {
-        mydata->red = 3;
-        mydata->green = 0;
-    }
-    else
-    {
-        mydata->red = 0;
-        mydata->green = 3;
-    }
+    // if(mydata->master == FALSE)
+    // {
+    //     mydata->red = 0;
+    //     mydata->green = 3;
+    // }
     set_color(RGB(mydata->red, mydata->green, mydata->blue));
 
 
@@ -564,11 +568,11 @@ void loop()
      * if nearest neighrbor doesnt exist increment loneliness.
      **/
     if(mydata->num_neighbors==0){
-        printf("%d incr. loneliness\n", mydata->my_id);
+        // printf("%d incr. loneliness\n", mydata->my_id);
         mydata->loneliness++;
         send_sharing();
     }else{
-        printf("%d has neighbor\n", mydata->my_id);
+        // printf("%d has neighbor\n", mydata->my_id);
     }
 }
 
