@@ -401,7 +401,7 @@ void send_election(){
     //v sets m to the smallest id its seen
     mydata->min_id = (m->data[ID]<mydata->my_id) ? m->data[ID] : mydata->my_id;
     //if v receives a message ELECTING(w)
-    if(mydata->state == m->data[STATE] && m->data[MSG]==ELECTION){
+    if(mydata->state == COOPERATIVE && m->data[STATE] == COOPERATIVE && m->data[MSG]==ELECTION){
         if(m->data[ID] < mydata->min_id){
             mydata->min_id = m->data[ID]; // sets m := w
             enqueue_message(ELECTION); // v forwards election message of w to clockwise neighbor
@@ -410,32 +410,17 @@ void send_election(){
 
         else if (m->data[ID] > mydata->min_id && mydata->state == COOPERATIVE)
         {
-
+        	enqueue_message(ELECTION); // v forwards election message of w to clockwise neighbor
         }
         else if (mydata->my_id == m.my_id)
         {
         	enqueue_message(ELECTED); // v forwards elected message of w to clockwise neighbor
         }    
-    if (mydata->state == m->data[STATE] && m->data[MSG]==ELECTION){}
-    //else if node = other node
-
-//     //if node gets electing(other node)node
-//     else if(mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTION && mydata->my_id!= mydata->min_id){
-//         //if node with other node < m
-//         if(mydata->my_id < mydata->min_id){
-//         //node forwards electing(other node) clockwise and set other node to m
-//         //node does not become leader
-//         }
-//         //else if other node > m and node is not participating
-//         else(mydata->my_id > mydata->min_id){
-//      //   v sends electing(m) to successor
-//         }
-//     }
-
-//     //if node gets elected(other node) with other node != node
-//     if((mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTED && mydata->my_id != mydata->min_id){
-//   //  node forward elected(other node) clockwise and leader = other node
-//     }
+    if (mydata->state == m->data[STATE] && m->data[MSG]==ELECTED)
+    {
+    	enqueue_message(ELECTED); // v forwards elected message of w to clockwise neighbor
+    	mydata->master = m->my_id;
+    }
 }
 
 /**********************************/
