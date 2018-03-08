@@ -38,7 +38,8 @@ typedef enum { NULL_MSG,
     JOIN,
     LEAVE,
     MOVE,
-    ELECTION
+    ELECTION,
+    ELECTED
     // Define ELECTION among these
 } message_type;  // MESSAGES
 
