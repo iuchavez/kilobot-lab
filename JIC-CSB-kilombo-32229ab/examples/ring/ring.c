@@ -314,9 +314,10 @@ void message_rx(message_t *m, distance_measurement_t *d)
                 printf("The ELECTION case\n");
                 // receive_election();
             //     data[ID] == myData->left{
-                receive_election();                // }
+                receive_election(m->data);                // }
                 break;
-            // case ELECTED:
+            case ELECTED:
+                printf("Someone was elected.");
             default:
                 printf("The DEFAULT case");
                 break;
@@ -391,16 +392,24 @@ void send_election(){
 
 // }
 
-// void election_process(){
-//     //node sends electing(v) to successor
-//     mydata->message[mydata->min_id] = mydata->my_id;
-    
-//         //else if node = other node
-//     if(mydata->state == COOPERATIVE && mydata->my_id == mydata->min_id){
-//       //  node sends elected(node) clockwise
-//     }
+ void election_process(message_t *m){
+    //node sends electing(v) to successor
+    //send_election();??
+    //v sets m to the smallest id its seen
+    mydata->min_id = (m->data[ID]<mydata->my_id) ? m->data[ID] : mydata->my_id;
+    //if v receives a message ELECTING(w)
+    if(mydata->state == m->data[STATE] && m->data[MSG]==ELECTION){
+    //if v with w < m then
+    //     v forwards ELECT IN G(w) to its clockwise neighbor and sets m := w
+    //     v decides not to be the leader, if it has not done so already.
+        if(mydata->min_id){
+            mydata->min_id = m->data[ID];
+            enqueue_message(ELECTION);
+        }
+    } else if (mydata->state == m->data[STATE] && m->data[MSG]==ELECTION)
+    //else if node = other node
 
-//     //if node gets electing(other node)
+//     //if node gets electing(other node)node
 //     else if(mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTION && mydata->my_id!= mydata->min_id){
 //         //if node with other node < m
 //         if(mydata->my_id < mydata->min_id){
@@ -417,7 +426,7 @@ void send_election(){
 //     if((mydata->state == COOPERATIVE && mydata->data[MSG] == ELECTED && mydata->my_id != mydata->min_id){
 //   //  node forward elected(other node) clockwise and leader = other node
 //     }
-// }
+}
 
 /**********************************/
 /**********************************/
@@ -475,7 +484,7 @@ void send_move()
     }
     if (mydata->state == COOPERATIVE && !isQueueFull() && mydata->token && mydata->send_token <= mydata->now)
     {
-            // Sending
+        // Sending
         enqueue_message(MOVE);
         mydata->token = 0;
         mydata->blue = 0;
