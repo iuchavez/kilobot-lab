@@ -301,19 +301,26 @@ void message_rx(message_t *m, distance_measurement_t *d)
         switch (m->data[MSG])
         {
             case JOIN:
+                printf("The JOIN case");
                 recv_joining(m->data);
                 break;
             case MOVE:
+                printf("The MOVE case");
                 recv_move(m->data);
                 break;
+            
             // Notes from professor
-            // case ELECTION:
-            //     receive_election();
+            case ELECTION:
+                printf("The ELECTION case");
+                // receive_election();
             //     data[ID] == myData->left{
             //          recieve_election();    
-            //     }
+                // }
+                break;
             // case ELECTED:
-        
+            default:
+                printf("The DEFAULT case");
+                break;
         }
     }
 }
@@ -383,6 +390,9 @@ void send_joining()
             mydata->my_right = mydata->nearest_neighbors[i].right_id;
             mydata->my_left = mydata->nearest_neighbors[i].id;
             enqueue_message(JOIN);
+            //FROM NOTES - mark
+            mydata->isInitiator = TRUE;
+
 #ifdef SIMULATOR
             printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
 #endif
