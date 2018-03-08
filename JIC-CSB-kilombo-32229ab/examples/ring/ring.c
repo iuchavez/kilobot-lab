@@ -392,6 +392,9 @@ void send_election(){
 
 // }
 
+//mydata - v
+//m - w
+//mydata->min_id - m
  void election_process(message_t *m){
     //node sends electing(v) to successor
     //send_election();??
@@ -399,14 +402,21 @@ void send_election(){
     mydata->min_id = (m->data[ID]<mydata->my_id) ? m->data[ID] : mydata->my_id;
     //if v receives a message ELECTING(w)
     if(mydata->state == m->data[STATE] && m->data[MSG]==ELECTION){
-    //if v with w < m then
-    //     v forwards ELECT IN G(w) to its clockwise neighbor and sets m := w
-    //     v decides not to be the leader, if it has not done so already.
-        if(mydata->min_id){
-            mydata->min_id = m->data[ID];
-            enqueue_message(ELECTION);
+        if(m->data[ID] < mydata->min_id){
+            mydata->min_id = m->data[ID]; // sets m := w
+            enqueue_message(ELECTION); // v forwards election message of w to clockwise neighbor
+            mydata->master = 0; //v does not become leader
         }
-    } else if (mydata->state == m->data[STATE] && m->data[MSG]==ELECTION){}
+
+        else if (m->data[ID] > mydata->min_id && mydata->state == COOPERATIVE)
+        {
+
+        }
+        else if (mydata->my_id == m.my_id)
+        {
+        	enqueue_message(ELECTED); // v forwards elected message of w to clockwise neighbor
+        }    
+    if (mydata->state == m->data[STATE] && m->data[MSG]==ELECTION){}
     //else if node = other node
 
 //     //if node gets electing(other node)node
