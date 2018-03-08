@@ -406,7 +406,7 @@ void send_election(){
             mydata->min_id = m->data[ID];
             enqueue_message(ELECTION);
         }
-    } else if (mydata->state == m->data[STATE] && m->data[MSG]==ELECTION)
+    } else if (mydata->state == m->data[STATE] && m->data[MSG]==ELECTION){}
     //else if node = other node
 
 //     //if node gets electing(other node)node
