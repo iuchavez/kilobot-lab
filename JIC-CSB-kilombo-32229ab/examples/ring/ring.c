@@ -293,6 +293,15 @@ void receive_election(uint8_t *payload){
      mydata->isInitiator = TRUE; // forward m to the right
 }
 
+void send_election(){
+    //mydata->isInitiator == TRUE && 
+    // can probably get rid of guard for testing - Adam
+     if(!isQueueFull() && mydata->isInitiator){
+         enqueue_message(ELECTION);
+         mydata->isInitiator = FALSE;
+     }
+ }
+
 
 void message_rx(message_t *m, distance_measurement_t *d)
 {
@@ -364,14 +373,7 @@ char enqueue_message(uint8_t m)
     return 0;
 }
 
-void send_election(){
-    //mydata->isInitiator == TRUE && 
-    // can probably get rid of guard for testing - Adam
-     if(!isQueueFull() && mydata->isInitiator){
-         enqueue_message(ELECTION);
-         mydata->isInitiator = FALSE;
-     }
- }
+
 
 // This is from the professor
 // void send_election(){
