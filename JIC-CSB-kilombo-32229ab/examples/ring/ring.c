@@ -285,6 +285,14 @@ void recv_move(uint8_t *payload)
     } */
 }
 
+void receive_election(uint8_t *payload){
+    printf("%d receiving Election\n", mydata->my_id, payload[MASTER]);
+    // if()
+    // if(mydata->my_id){}
+
+     mydata->isInitiator = TRUE; // forward m to the right
+}
+
 
 void message_rx(message_t *m, distance_measurement_t *d)
 {
@@ -367,13 +375,7 @@ void send_election(){
      }
  }
 
- void receive_election(uint8_t *payload){
-    printf("%d receiving Election\n", mydata->my_id, payload[MASTER]);
-    // if()
-    // if(mydata->my_id){}
 
-     mydata->isInitiator = TRUE; // forward m to the right
-}
 
 // This is from the professor
 // void send_election(){
@@ -615,7 +617,7 @@ void loop()
         send_joining();
         //if(mydata->num_neighbors>0){
         //send_election();
-        printf("%d sending ELECTION\n", mydata->my_id);
+        //printf("%d sending ELECTION\n", mydata->my_id);
         //}
         
     }
