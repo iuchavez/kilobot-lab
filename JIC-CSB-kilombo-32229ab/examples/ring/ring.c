@@ -312,9 +312,10 @@ void message_rx(message_t *m, distance_measurement_t *d)
             // Notes from professor
             case ELECTION:
                 printf("The ELECTION case\n");
-                // receive_election();
+                if (mydata->my_left == m->data[ID])
+                   // receive_election();
             //     data[ID] == myData->left{
-                receive_election(m->data);                // }
+                    receive_election(m->data);                // }
                 break;
             case ELECTED:
                 printf("Someone was elected.");
@@ -344,6 +345,9 @@ char enqueue_message(uint8_t m)
 		mydata->message[mydata->tail].data[COLOR] = RGB(mydata->red,mydata->green,mydata->blue);
         //Sending Master Statues 
         mydata->message[mydata->tail].data[MASTER] = mydata->master;
+        if (m == ELECTION || m == ELECTED)
+                mydata->message[mydata->tail].data[MASTER] = mydata->min_id;
+
     
         mydata->message[mydata->tail].type = NORMAL;
         mydata->message[mydata->tail].crc = message_crc(&mydata->message[mydata->tail]);
@@ -357,15 +361,18 @@ char enqueue_message(uint8_t m)
 void send_election(){
     //mydata->isInitiator == TRUE && 
     // can probably get rid of guard for testing - Adam
-    // if(!isQueueFull() && mydata->state == COOPERATIVE){
+     if(!isQueueFull() && mydata->isInitiator){
          enqueue_message(ELECTION);
          mydata->isInitiator = FALSE;
-    //  ç}
+     }
  }
 
- void receive_election(){
-    printf("%d receiving Election\n", mydata->my_id);
+ void receive_election(uint8_t *payload){
+    printf("%d receiving Election\n", mydata->my_id, payload[MASTER]);
+    // if()
     // if(mydata->my_id){}
+
+     mydata->isInitiator = TRUE; // forward m to the right
 }
 
 // This is from the professor
@@ -390,6 +397,7 @@ void send_election(){
      if(mydata->state == COOPERATIVE && m->data[STATE] == COOPERATIVE && m->data[MSG]==ELECTED){
          mydata->min_id = m->data[SENDER];
          mydata->master = 0;
+    // if(mydata->my_id){}
          enqueue_message(ELECTED);
     }
 }
@@ -600,18 +608,18 @@ void updateNeighbors(){
 // Adam: this is where most of the code is being executed
 void loop()
 {
-    
+    delay(30);
     //send_move();
     if(mydata->loneliness>0 && mydata->num_neighbors<1){
         // printf("%d sent a JOIN\n", mydata->my_id);
         send_joining();
         //if(mydata->num_neighbors>0){
-        send_election();
+        //send_election();
         printf("%d sending ELECTION\n", mydata->my_id);
         //}
         
     }
-
+    send_election();
     send_sharing();
     move(mydata->now);
 
