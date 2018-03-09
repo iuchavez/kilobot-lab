@@ -252,7 +252,7 @@ void recv_joining(uint8_t *payload)
         mydata->master = 1;
     }
 #ifdef SIMULATOR
-    printf("%d Left: %d Right: %d\n", mydata->my_id, mydata->my_left, mydata->my_right);
+    //printf("%d Left: %d Right: %d\n", mydata->my_id, mydata->my_left, mydata->my_right);
 #endif
 }
 
@@ -320,13 +320,11 @@ void message_rx(message_t *m, distance_measurement_t *d)
             // Notes from professor
             case ELECTION:
                 printf("The ELECTION case\n");
-                if (mydata->my_left == m->data[ID])
-                   // receive_election();
-            //     data[ID] == myData->left{
-                    receive_election(m->data);                // }
+                if (mydata->my_right == m->data[ID])
+                    receive_election(m->data); 
                 break;
             case ELECTED:
-                printf("Someone was elected.");
+                printf("ELECTED Case.");
             default:
                 printf("The DEFAULT case");
                 break;
@@ -374,8 +372,6 @@ void send_election(){
          mydata->isInitiator = FALSE;
      }
  }
-
-
 
 // This is from the professor
 // void send_election(){
@@ -461,7 +457,7 @@ void send_joining()
             mydata->isInitiator = TRUE;
 
 #ifdef SIMULATOR
-            printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
+            //printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
 #endif
         }
     }
@@ -613,15 +609,9 @@ void loop()
     delay(30);
     //send_move();
     if(mydata->loneliness>0 && mydata->num_neighbors<1){
-        // printf("%d sent a JOIN\n", mydata->my_id);
         send_joining();
-        //if(mydata->num_neighbors>0){
-        //send_election();
-        //printf("%d sending ELECTION\n", mydata->my_id);
-        //}
-        
+        send_election();
     }
-    send_election();
     send_sharing();
     move(mydata->now);
 
