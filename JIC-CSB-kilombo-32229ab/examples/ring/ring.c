@@ -16,7 +16,7 @@
     REGISTER_USERDATA(USERDATA)
 #endif
 
-
+void receive_election();
 
 char isQueueFull()
 {
