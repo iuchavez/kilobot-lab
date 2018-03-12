@@ -17,6 +17,7 @@
 #endif
 
 char enqueue_message(uint8_t );
+void recv_elected(message_t *);
 
 char isQueueFull()
 {
@@ -306,12 +307,11 @@ void send_election(){
 void message_rx(message_t *m, distance_measurement_t *d)
 {
     uint8_t dist = estimate_distance(d);
-    
     if (m->type == NORMAL && m->data[MSG] !=NULL_MSG)
     {
         
 #ifdef SIMULATOR
-        printf("%d Receives %d %d\n", mydata->my_id,  m->data[MSG], m->data[RECEIVER]);
+        //printf("%d Receives %d from %d\n", mydata->my_id,  m->data[MSG], m->data[RECEIVER]);
 #endif
         //113 receiving 248 from 72
         recv_sharing(m->data, dist);
@@ -332,7 +332,8 @@ void message_rx(message_t *m, distance_measurement_t *d)
                 break;
             case ELECTED:
                 printf("ELECTED Case\n");
-                recv_elected(m->data);
+                if(mydata->my_right == m->data[ID])
+                    recv_elected(m->data);
             default:
                 break;
         }
@@ -591,6 +592,7 @@ void printStatus(){
     printf("%d\nloneliness: %d\n num_neigh: %d\n", mydata->my_id, mydata->loneliness,
         mydata->num_neighbors);
 }
+
 // Adam: this is where most of the code is being executed
 void loop()
 {
@@ -603,16 +605,21 @@ void loop()
      * joiner initiate send election
      * How is isIntiator handeled if send joining doesn't give anything back?
      */
-    send_joining();
+    // send_sharing();
+    //if(mydata->my_id==72) printStatus();
     if(mydata->loneliness>0 && mydata->num_neighbors<1){
-        if(mydata->isInitiator==TRUE){
-            printf("%d is sending an election", mydata->my_id);
-            send_election();    
-        }            
+        printf("Send JoinShare\n");
+        send_joining();
+        send_sharing();
+    }else{
+        send_sharing();
     }
-    else{
-        // send_sharing();
-    }
+    if(mydata->isInitiator==TRUE && mydata->num_neighbors>0){
+        send_election();    
+    }    
+    // if(mydata->isInitiator==TRUE){
+    //     send_election();    
+    // }            
     move(mydata->now);
     // printStatus();
     //just moved code to a separate function
@@ -641,10 +648,6 @@ void loop()
 
     mydata->loneliness++;
     
-    if (mydata->loneliness > 100)
-    {
-        reset_self();
-    }
     mydata->now++;
     /**
      * Get nearest neightbors
@@ -652,9 +655,12 @@ void loop()
      **/
     if(mydata->num_neighbors==0){
         mydata->loneliness++;
-        send_sharing();
-    }else{
-        printf("%d has neighbor\n", mydata->my_id);
+        if (mydata->loneliness > 100)
+        {
+            reset_self();
+        }
+        // printf("%d does not have a neighbor\n", mydata->my_id);
+        // send_sharing();
     }
 }
 
