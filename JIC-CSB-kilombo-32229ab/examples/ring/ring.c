@@ -18,6 +18,10 @@
 
 void receive_election();
 
+void send_elected();
+
+void receive_elected();
+
 char isQueueFull()
 {
     return (mydata->tail +1) % QUEUE == mydata->head;
@@ -318,6 +322,8 @@ void message_rx(message_t *m, distance_measurement_t *d)
                 break;
             case ELECTED:
                 printf("Someone was elected.");
+                receive_elected();
+                break;
             default:
                 printf("The DEFAULT case");
                 break;
@@ -360,8 +366,18 @@ void send_election(){
     // if(!isQueueFull() && mydata->state == COOPERATIVE){
          enqueue_message(ELECTION);
          mydata->isInitiator = FALSE;
-    //  ç}
+    //  }
  }
+
+ void send_elected(){
+        printf("sending Elected\n");
+        enqueue_message(ELECTED);
+ }
+
+  void receive_elected(){
+    printf("%d receiving Elected\n", mydata->my_id);
+    // if(mydata->my_id){}
+}
 
  void receive_election(){
     printf("%d receiving Election\n", mydata->my_id);
@@ -609,6 +625,7 @@ void loop()
         send_election();
         printf("%d sending ELECTION\n", mydata->my_id);
         //}
+        send_elected();
         
     }
 
