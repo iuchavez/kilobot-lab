@@ -308,10 +308,9 @@ void message_rx(message_t *m, distance_measurement_t *d)
 {
     uint8_t dist = estimate_distance(d);
     if (m->type == NORMAL && m->data[MSG] !=NULL_MSG)
-    {
-        
+    {        
 #ifdef SIMULATOR
-        //printf("%d Receives %d from %d\n", mydata->my_id,  m->data[MSG], m->data[RECEIVER]);
+        printf("%d Receives %d from %d\n", mydata->my_id,  m->data[MSG], m->data[RECEIVER]);
 #endif
         //113 receiving 248 from 72
         recv_sharing(m->data, dist);
@@ -596,7 +595,6 @@ void printStatus(){
 // Adam: this is where most of the code is being executed
 void loop()
 {
-    delay(30);
     //send_move();
     /*
      * If lonely
@@ -607,19 +605,16 @@ void loop()
      */
     // send_sharing();
     //if(mydata->my_id==72) printStatus();
-    if(mydata->loneliness>0 && mydata->num_neighbors<1){
-        printf("Send JoinShare\n");
+    //if(mydata->loneliness>0){
         send_joining();
         send_sharing();
-    }else{
-        send_sharing();
-    }
-    if(mydata->isInitiator==TRUE && mydata->num_neighbors>0){
-        send_election();    
-    }    
+    //}else{
+        //send_sharing();
+    //}
     // if(mydata->isInitiator==TRUE){
     //     send_election();    
-    // }            
+    // }    
+            
     move(mydata->now);
     // printStatus();
     //just moved code to a separate function
@@ -646,7 +641,6 @@ void loop()
     // }
     set_color(RGB(mydata->red, mydata->green, mydata->blue));
 
-    mydata->loneliness++;
     
     mydata->now++;
     /**
