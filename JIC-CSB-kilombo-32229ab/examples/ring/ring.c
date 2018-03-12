@@ -303,7 +303,6 @@ void send_election(){
      }
  }
 
-
 void message_rx(message_t *m, distance_measurement_t *d)
 {
     uint8_t dist = estimate_distance(d);
@@ -319,11 +318,9 @@ void message_rx(message_t *m, distance_measurement_t *d)
         switch (m->data[MSG])
         {
             case JOIN:
-                printf("The JOIN case");
                 recv_joining(m->data);
                 break;
             case MOVE:
-                printf("The MOVE case");
                 recv_move(m->data);
                 break;
             
@@ -334,9 +331,9 @@ void message_rx(message_t *m, distance_measurement_t *d)
                     receive_election(m->data); 
                 break;
             case ELECTED:
-                printf("ELECTED Case.");
+                printf("ELECTED Case\n");
+                recv_elected(m->data);
             default:
-                printf("The DEFAULT case");
                 break;
         }
     }
@@ -378,7 +375,7 @@ char enqueue_message(uint8_t m)
     return 0;
 }
 
- void elected(message_t *m){
+ void recv_elected(message_t *m){
      if(mydata->state == COOPERATIVE && m->data[STATE] == COOPERATIVE && m->data[MSG]==ELECTED){
          mydata->min_id = m->data[SENDER];
          mydata->master = 0;
@@ -389,7 +386,7 @@ char enqueue_message(uint8_t m)
 
 //mydata - v
 //m - w
-//mydata->min_id - m
+//mydataz->min_id - m
  void election_process(message_t *m){
     //node sends electing(v) to successor
     //send_election();??
@@ -444,7 +441,7 @@ void send_joining()
             mydata->isInitiator = TRUE;
 
 #ifdef SIMULATOR
-            //printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
+            printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
 #endif
         }
     }
@@ -590,6 +587,10 @@ void updateNeighbors(){
     } 
 }
 
+void printStatus(){
+    printf("%d\nloneliness: %d\n num_neigh: %d\n", mydata->my_id, mydata->loneliness,
+        mydata->num_neighbors);
+}
 // Adam: this is where most of the code is being executed
 void loop()
 {
@@ -602,13 +603,18 @@ void loop()
      * joiner initiate send election
      * How is isIntiator handeled if send joining doesn't give anything back?
      */
+    send_joining();
     if(mydata->loneliness>0 && mydata->num_neighbors<1){
-        send_joining();
-        send_election();
+        if(mydata->isInitiator==TRUE){
+            printf("%d is sending an election", mydata->my_id);
+            send_election();    
+        }            
     }
-    send_sharing();
+    else{
+        // send_sharing();
+    }
     move(mydata->now);
-
+    // printStatus();
     //just moved code to a separate function
     updateNeighbors();
 
@@ -633,9 +639,12 @@ void loop()
     // }
     set_color(RGB(mydata->red, mydata->green, mydata->blue));
 
-
-    uint8_t i;
-
+    mydata->loneliness++;
+    
+    if (mydata->loneliness > 100)
+    {
+        reset_self();
+    }
     mydata->now++;
     /**
      * Get nearest neightbors
