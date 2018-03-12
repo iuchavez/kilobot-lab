@@ -1,0 +1,360 @@
+\hypertarget{ring_8c}{}\section{ring.\+c File Reference}
+\label{ring_8c}\index{ring.\+c@{ring.\+c}}
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$kilombo.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}ring.\+h\char`\"{}}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{ring_8c_ad8a5d8c4e3342fb668142df792e93f38}{S\+I\+M\+U\+L\+A\+T\+OR}}
+\begin{DoxyCompactList}\small\item\em This program implements an election process on a ring formation of kilobots. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+char \mbox{\hyperlink{ring_8c_ac0925bfd9babb8b3be15fa98f7dd04dd}{is\+Queue\+Full}} ()
+\item 
+void \mbox{\hyperlink{ring_8c_a540b8ce2367b2cf4b32c8b8c7e9642fc}{smooth\+\_\+set\+\_\+motors}} (uint8\+\_\+t ccw, uint8\+\_\+t cw)
+\item 
+void \mbox{\hyperlink{ring_8c_a88524e838112e1905cc3f74b0735ae71}{set\+\_\+motion}} (motion\+\_\+t new\+\_\+motion)
+\item 
+char \mbox{\hyperlink{ring_8c_a764ba1034860f888b777fdf475143667}{in\+\_\+interval}} (uint8\+\_\+t distance)
+\item 
+char \mbox{\hyperlink{ring_8c_a77db9a24f35da1c9278ccd2d15720552}{is\+\_\+stabilized}} ()
+\item 
+uint8\+\_\+t \mbox{\hyperlink{ring_8c_a421bd0c8e972c872a4c101c7fe2776db}{exists\+\_\+nearest\+\_\+neighbor}} (uint8\+\_\+t id)
+\item 
+uint8\+\_\+t \mbox{\hyperlink{ring_8c_acc148f4ab3c9d5f09b3db2a3077b3fc1}{are\+\_\+all\+\_\+cooperative}} ()
+\item 
+uint8\+\_\+t \mbox{\hyperlink{ring_8c_af19fc3162e19356dfdd8d2d04fb98ad9}{get\+\_\+nearest\+\_\+two\+\_\+neighbors}} ()
+\item 
+void \mbox{\hyperlink{ring_8c_a8807611add654242fa535446222a59f0}{update\+\_\+color}} (uint8\+\_\+t $\ast$payload)
+\item 
+void \mbox{\hyperlink{ring_8c_ad8d6e8bd005b92febac972bac5171128}{recv\+\_\+sharing}} (uint8\+\_\+t $\ast$payload, uint8\+\_\+t distance)
+\item 
+void \mbox{\hyperlink{ring_8c_a27b20f1b26960043194f20584b81f3c9}{recv\+\_\+joining}} (uint8\+\_\+t $\ast$payload)
+\item 
+void \mbox{\hyperlink{ring_8c_aa29591f5cf15a4b280882e6f1f91e3be}{recv\+\_\+move}} (uint8\+\_\+t $\ast$payload)
+\item 
+void \mbox{\hyperlink{ring_8c_ac178becefc5a6cb069d7204976ae4506}{recv\+\_\+election}} (uint8\+\_\+t $\ast$payload)
+\item 
+void \mbox{\hyperlink{ring_8c_a99c4cc2374067eeaf9afdf48c7a2924a}{recv\+\_\+elected}} (uint8\+\_\+t $\ast$payload)
+\item 
+void \mbox{\hyperlink{ring_8c_a41166d26230bdddde589f3ab36a422b6}{message\+\_\+rx}} (message\+\_\+t $\ast$m, distance\+\_\+measurement\+\_\+t $\ast$d)
+\item 
+char \mbox{\hyperlink{ring_8c_af31e097898d9b7b49e904cb3c9958afd}{enqueue\+\_\+message}} (uint8\+\_\+t m)
+\item 
+void \mbox{\hyperlink{ring_8c_a1695dcc0c6a920317d739886e3266093}{send\+\_\+joining}} ()
+\item 
+void \mbox{\hyperlink{ring_8c_a95a8f45823e9116b153d0b1f7eaa6201}{send\+\_\+sharing}} ()
+\item 
+void \mbox{\hyperlink{ring_8c_a998efe9a50351c97aff190d3d6151528}{send\+\_\+elected}} ()
+\item 
+void \mbox{\hyperlink{ring_8c_ab9082108a5add8649dfe4d65c7d7b676}{send\+\_\+election}} ()
+\item 
+void \mbox{\hyperlink{ring_8c_a2116cdc18ec3be1de7691388d0a6d6a1}{send\+\_\+move}} ()
+\item 
+void \mbox{\hyperlink{ring_8c_a34f4768b59989ab2a1fa2e480b7b3f33}{move}} (uint8\+\_\+t tick)
+\item 
+void \mbox{\hyperlink{ring_8c_a8f5448d1f75a1e052ad39340ac6947ae}{reset\+\_\+self}} ()
+\item 
+void \mbox{\hyperlink{ring_8c_aa5dfa0333a1d16d7016ae65a29ff98c6}{remove\+\_\+neighbor}} (nearest\+\_\+neighbor\+\_\+t lost)
+\item 
+void \mbox{\hyperlink{ring_8c_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\item 
+message\+\_\+t $\ast$ \mbox{\hyperlink{ring_8c_a7fe98b6e71da81f72143305f649beb63}{message\+\_\+tx}} ()
+\item 
+void \mbox{\hyperlink{ring_8c_a0f57ca4676befec475a590c8b8d78d8e}{message\+\_\+tx\+\_\+success}} ()
+\item 
+void \mbox{\hyperlink{ring_8c_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\item 
+\mbox{\Hypertarget{ring_8c_ad3e5867b96f0cbe67cbb0f6bb5b51e8e}\label{ring_8c_ad3e5867b96f0cbe67cbb0f6bb5b51e8e}} 
+char $\ast$ {\bfseries cb\+\_\+botinfo} (void)
+\item 
+\mbox{\Hypertarget{ring_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{ring_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+int {\bfseries main} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{ring_8c_ad8a5d8c4e3342fb668142df792e93f38}\label{ring_8c_ad8a5d8c4e3342fb668142df792e93f38}} 
+\index{ring.\+c@{ring.\+c}!S\+I\+M\+U\+L\+A\+T\+OR@{S\+I\+M\+U\+L\+A\+T\+OR}}
+\index{S\+I\+M\+U\+L\+A\+T\+OR@{S\+I\+M\+U\+L\+A\+T\+OR}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{S\+I\+M\+U\+L\+A\+T\+OR}{SIMULATOR}}
+{\footnotesize\ttfamily \#define S\+I\+M\+U\+L\+A\+T\+OR}
+
+
+
+This program implements an election process on a ring formation of kilobots. 
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{ring_8c_acc148f4ab3c9d5f09b3db2a3077b3fc1}\label{ring_8c_acc148f4ab3c9d5f09b3db2a3077b3fc1}} 
+\index{ring.\+c@{ring.\+c}!are\+\_\+all\+\_\+cooperative@{are\+\_\+all\+\_\+cooperative}}
+\index{are\+\_\+all\+\_\+cooperative@{are\+\_\+all\+\_\+cooperative}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{are\+\_\+all\+\_\+cooperative()}{are\_all\_cooperative()}}
+{\footnotesize\ttfamily uint8\+\_\+t are\+\_\+all\+\_\+cooperative (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Checks if all nodes are in cooperative state \begin{DoxyReturn}{Returns}
+whether all nodes are cooperative 
+\end{DoxyReturn}
+\mbox{\Hypertarget{ring_8c_af31e097898d9b7b49e904cb3c9958afd}\label{ring_8c_af31e097898d9b7b49e904cb3c9958afd}} 
+\index{ring.\+c@{ring.\+c}!enqueue\+\_\+message@{enqueue\+\_\+message}}
+\index{enqueue\+\_\+message@{enqueue\+\_\+message}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{enqueue\+\_\+message()}{enqueue\_message()}}
+{\footnotesize\ttfamily char enqueue\+\_\+message (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{m }\end{DoxyParamCaption})}
+
+Create message and send to queue 
+\begin{DoxyParams}{Parameters}
+{\em m} & message \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+message sent 
+\end{DoxyReturn}
+\mbox{\Hypertarget{ring_8c_a421bd0c8e972c872a4c101c7fe2776db}\label{ring_8c_a421bd0c8e972c872a4c101c7fe2776db}} 
+\index{ring.\+c@{ring.\+c}!exists\+\_\+nearest\+\_\+neighbor@{exists\+\_\+nearest\+\_\+neighbor}}
+\index{exists\+\_\+nearest\+\_\+neighbor@{exists\+\_\+nearest\+\_\+neighbor}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{exists\+\_\+nearest\+\_\+neighbor()}{exists\_nearest\_neighbor()}}
+{\footnotesize\ttfamily uint8\+\_\+t exists\+\_\+nearest\+\_\+neighbor (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{id }\end{DoxyParamCaption})}
+
+Search for id in neighboring nodes 
+\begin{DoxyParams}{Parameters}
+{\em id} & the node id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the ids of neighbors 
+\end{DoxyReturn}
+\mbox{\Hypertarget{ring_8c_af19fc3162e19356dfdd8d2d04fb98ad9}\label{ring_8c_af19fc3162e19356dfdd8d2d04fb98ad9}} 
+\index{ring.\+c@{ring.\+c}!get\+\_\+nearest\+\_\+two\+\_\+neighbors@{get\+\_\+nearest\+\_\+two\+\_\+neighbors}}
+\index{get\+\_\+nearest\+\_\+two\+\_\+neighbors@{get\+\_\+nearest\+\_\+two\+\_\+neighbors}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{get\+\_\+nearest\+\_\+two\+\_\+neighbors()}{get\_nearest\_two\_neighbors()}}
+{\footnotesize\ttfamily uint8\+\_\+t get\+\_\+nearest\+\_\+two\+\_\+neighbors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Get ids of the neighbors \begin{DoxyReturn}{Returns}
+the ids of neighbors 
+\end{DoxyReturn}
+\mbox{\Hypertarget{ring_8c_a764ba1034860f888b777fdf475143667}\label{ring_8c_a764ba1034860f888b777fdf475143667}} 
+\index{ring.\+c@{ring.\+c}!in\+\_\+interval@{in\+\_\+interval}}
+\index{in\+\_\+interval@{in\+\_\+interval}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{in\+\_\+interval()}{in\_interval()}}
+{\footnotesize\ttfamily char in\+\_\+interval (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{distance }\end{DoxyParamCaption})}
+
+Checks if a node is within an interval 
+\begin{DoxyParams}{Parameters}
+{\em distance} & the length between two nodes \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the state of the interval 
+\end{DoxyReturn}
+\mbox{\Hypertarget{ring_8c_a77db9a24f35da1c9278ccd2d15720552}\label{ring_8c_a77db9a24f35da1c9278ccd2d15720552}} 
+\index{ring.\+c@{ring.\+c}!is\+\_\+stabilized@{is\+\_\+stabilized}}
+\index{is\+\_\+stabilized@{is\+\_\+stabilized}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{is\+\_\+stabilized()}{is\_stabilized()}}
+{\footnotesize\ttfamily char is\+\_\+stabilized (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Checks if a node is stabilized \begin{DoxyReturn}{Returns}
+the state of the node\textquotesingle{}s stability 
+\end{DoxyReturn}
+\mbox{\Hypertarget{ring_8c_ac0925bfd9babb8b3be15fa98f7dd04dd}\label{ring_8c_ac0925bfd9babb8b3be15fa98f7dd04dd}} 
+\index{ring.\+c@{ring.\+c}!is\+Queue\+Full@{is\+Queue\+Full}}
+\index{is\+Queue\+Full@{is\+Queue\+Full}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{is\+Queue\+Full()}{isQueueFull()}}
+{\footnotesize\ttfamily char is\+Queue\+Full (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Checks if message queue is full \begin{DoxyReturn}{Returns}
+the state of the message queue 
+\end{DoxyReturn}
+\mbox{\Hypertarget{ring_8c_afe461d27b9c48d5921c00d521181f12f}\label{ring_8c_afe461d27b9c48d5921c00d521181f12f}} 
+\index{ring.\+c@{ring.\+c}!loop@{loop}}
+\index{loop@{loop}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Establish connection process \mbox{\Hypertarget{ring_8c_a41166d26230bdddde589f3ab36a422b6}\label{ring_8c_a41166d26230bdddde589f3ab36a422b6}} 
+\index{ring.\+c@{ring.\+c}!message\+\_\+rx@{message\+\_\+rx}}
+\index{message\+\_\+rx@{message\+\_\+rx}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{message\+\_\+rx()}{message\_rx()}}
+{\footnotesize\ttfamily void message\+\_\+rx (\begin{DoxyParamCaption}\item[{message\+\_\+t $\ast$}]{m,  }\item[{distance\+\_\+measurement\+\_\+t $\ast$}]{d }\end{DoxyParamCaption})}
+
+Receive message 
+\begin{DoxyParams}{Parameters}
+{\em m} & message \\
+\hline
+{\em d} & distance \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{ring_8c_a7fe98b6e71da81f72143305f649beb63}\label{ring_8c_a7fe98b6e71da81f72143305f649beb63}} 
+\index{ring.\+c@{ring.\+c}!message\+\_\+tx@{message\+\_\+tx}}
+\index{message\+\_\+tx@{message\+\_\+tx}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{message\+\_\+tx()}{message\_tx()}}
+{\footnotesize\ttfamily message\+\_\+t$\ast$ message\+\_\+tx (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+send the message \begin{DoxyReturn}{Returns}
+the message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{ring_8c_a0f57ca4676befec475a590c8b8d78d8e}\label{ring_8c_a0f57ca4676befec475a590c8b8d78d8e}} 
+\index{ring.\+c@{ring.\+c}!message\+\_\+tx\+\_\+success@{message\+\_\+tx\+\_\+success}}
+\index{message\+\_\+tx\+\_\+success@{message\+\_\+tx\+\_\+success}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{message\+\_\+tx\+\_\+success()}{message\_tx\_success()}}
+{\footnotesize\ttfamily void message\+\_\+tx\+\_\+success (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+confirm message sending \mbox{\Hypertarget{ring_8c_a34f4768b59989ab2a1fa2e480b7b3f33}\label{ring_8c_a34f4768b59989ab2a1fa2e480b7b3f33}} 
+\index{ring.\+c@{ring.\+c}!move@{move}}
+\index{move@{move}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{move()}{move()}}
+{\footnotesize\ttfamily void move (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{tick }\end{DoxyParamCaption})}
+
+make a node move 
+\begin{DoxyParams}{Parameters}
+{\em tick} & a clock tick \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{ring_8c_a99c4cc2374067eeaf9afdf48c7a2924a}\label{ring_8c_a99c4cc2374067eeaf9afdf48c7a2924a}} 
+\index{ring.\+c@{ring.\+c}!recv\+\_\+elected@{recv\+\_\+elected}}
+\index{recv\+\_\+elected@{recv\+\_\+elected}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{recv\+\_\+elected()}{recv\_elected()}}
+{\footnotesize\ttfamily void recv\+\_\+elected (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{payload }\end{DoxyParamCaption})}
+
+make a node receive the elected process 
+\begin{DoxyParams}{Parameters}
+{\em payload} & the info for a given id \\
+\hline
+\end{DoxyParams}
+The leader \mbox{\Hypertarget{ring_8c_ac178becefc5a6cb069d7204976ae4506}\label{ring_8c_ac178becefc5a6cb069d7204976ae4506}} 
+\index{ring.\+c@{ring.\+c}!recv\+\_\+election@{recv\+\_\+election}}
+\index{recv\+\_\+election@{recv\+\_\+election}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{recv\+\_\+election()}{recv\_election()}}
+{\footnotesize\ttfamily void recv\+\_\+election (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{payload }\end{DoxyParamCaption})}
+
+make a node receive the election process 
+\begin{DoxyParams}{Parameters}
+{\em payload} & the info for a given id \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{ring_8c_a27b20f1b26960043194f20584b81f3c9}\label{ring_8c_a27b20f1b26960043194f20584b81f3c9}} 
+\index{ring.\+c@{ring.\+c}!recv\+\_\+joining@{recv\+\_\+joining}}
+\index{recv\+\_\+joining@{recv\+\_\+joining}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{recv\+\_\+joining()}{recv\_joining()}}
+{\footnotesize\ttfamily void recv\+\_\+joining (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{payload }\end{DoxyParamCaption})}
+
+join two nodes together 
+\begin{DoxyParams}{Parameters}
+{\em payload} & the info for a given id \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{ring_8c_aa29591f5cf15a4b280882e6f1f91e3be}\label{ring_8c_aa29591f5cf15a4b280882e6f1f91e3be}} 
+\index{ring.\+c@{ring.\+c}!recv\+\_\+move@{recv\+\_\+move}}
+\index{recv\+\_\+move@{recv\+\_\+move}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{recv\+\_\+move()}{recv\_move()}}
+{\footnotesize\ttfamily void recv\+\_\+move (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{payload }\end{DoxyParamCaption})}
+
+get move for a node 
+\begin{DoxyParams}{Parameters}
+{\em payload} & the info for a given id \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{ring_8c_ad8d6e8bd005b92febac972bac5171128}\label{ring_8c_ad8d6e8bd005b92febac972bac5171128}} 
+\index{ring.\+c@{ring.\+c}!recv\+\_\+sharing@{recv\+\_\+sharing}}
+\index{recv\+\_\+sharing@{recv\+\_\+sharing}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{recv\+\_\+sharing()}{recv\_sharing()}}
+{\footnotesize\ttfamily void recv\+\_\+sharing (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{payload,  }\item[{uint8\+\_\+t}]{distance }\end{DoxyParamCaption})}
+
+share info two nodes together 
+\begin{DoxyParams}{Parameters}
+{\em payload} & the info for a given id \\
+\hline
+{\em distance} & the space between two nodes \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{ring_8c_aa5dfa0333a1d16d7016ae65a29ff98c6}\label{ring_8c_aa5dfa0333a1d16d7016ae65a29ff98c6}} 
+\index{ring.\+c@{ring.\+c}!remove\+\_\+neighbor@{remove\+\_\+neighbor}}
+\index{remove\+\_\+neighbor@{remove\+\_\+neighbor}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{remove\+\_\+neighbor()}{remove\_neighbor()}}
+{\footnotesize\ttfamily void remove\+\_\+neighbor (\begin{DoxyParamCaption}\item[{nearest\+\_\+neighbor\+\_\+t}]{lost }\end{DoxyParamCaption})}
+
+Remove a node\textquotesingle{}s neighbor 
+\begin{DoxyParams}{Parameters}
+{\em lost} & the neighbor to remove \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{ring_8c_a8f5448d1f75a1e052ad39340ac6947ae}\label{ring_8c_a8f5448d1f75a1e052ad39340ac6947ae}} 
+\index{ring.\+c@{ring.\+c}!reset\+\_\+self@{reset\+\_\+self}}
+\index{reset\+\_\+self@{reset\+\_\+self}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{reset\+\_\+self()}{reset\_self()}}
+{\footnotesize\ttfamily void reset\+\_\+self (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Reset a node when it leaves ring \mbox{\Hypertarget{ring_8c_a998efe9a50351c97aff190d3d6151528}\label{ring_8c_a998efe9a50351c97aff190d3d6151528}} 
+\index{ring.\+c@{ring.\+c}!send\+\_\+elected@{send\+\_\+elected}}
+\index{send\+\_\+elected@{send\+\_\+elected}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{send\+\_\+elected()}{send\_elected()}}
+{\footnotesize\ttfamily void send\+\_\+elected (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Make a user elected \mbox{\Hypertarget{ring_8c_ab9082108a5add8649dfe4d65c7d7b676}\label{ring_8c_ab9082108a5add8649dfe4d65c7d7b676}} 
+\index{ring.\+c@{ring.\+c}!send\+\_\+election@{send\+\_\+election}}
+\index{send\+\_\+election@{send\+\_\+election}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{send\+\_\+election()}{send\_election()}}
+{\footnotesize\ttfamily void send\+\_\+election (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Send the election to another node \mbox{\Hypertarget{ring_8c_a1695dcc0c6a920317d739886e3266093}\label{ring_8c_a1695dcc0c6a920317d739886e3266093}} 
+\index{ring.\+c@{ring.\+c}!send\+\_\+joining@{send\+\_\+joining}}
+\index{send\+\_\+joining@{send\+\_\+joining}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{send\+\_\+joining()}{send\_joining()}}
+{\footnotesize\ttfamily void send\+\_\+joining (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Make a node join another node \mbox{\Hypertarget{ring_8c_a2116cdc18ec3be1de7691388d0a6d6a1}\label{ring_8c_a2116cdc18ec3be1de7691388d0a6d6a1}} 
+\index{ring.\+c@{ring.\+c}!send\+\_\+move@{send\+\_\+move}}
+\index{send\+\_\+move@{send\+\_\+move}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{send\+\_\+move()}{send\_move()}}
+{\footnotesize\ttfamily void send\+\_\+move (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+send a move to another node \mbox{\Hypertarget{ring_8c_a95a8f45823e9116b153d0b1f7eaa6201}\label{ring_8c_a95a8f45823e9116b153d0b1f7eaa6201}} 
+\index{ring.\+c@{ring.\+c}!send\+\_\+sharing@{send\+\_\+sharing}}
+\index{send\+\_\+sharing@{send\+\_\+sharing}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{send\+\_\+sharing()}{send\_sharing()}}
+{\footnotesize\ttfamily void send\+\_\+sharing (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Begin to share a message \mbox{\Hypertarget{ring_8c_a88524e838112e1905cc3f74b0735ae71}\label{ring_8c_a88524e838112e1905cc3f74b0735ae71}} 
+\index{ring.\+c@{ring.\+c}!set\+\_\+motion@{set\+\_\+motion}}
+\index{set\+\_\+motion@{set\+\_\+motion}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{set\+\_\+motion()}{set\_motion()}}
+{\footnotesize\ttfamily void set\+\_\+motion (\begin{DoxyParamCaption}\item[{motion\+\_\+t}]{new\+\_\+motion }\end{DoxyParamCaption})}
+
+Set a motion for a node 
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+motion} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{ring_8c_a4fc01d736fe50cf5b977f755b675f11d}\label{ring_8c_a4fc01d736fe50cf5b977f755b675f11d}} 
+\index{ring.\+c@{ring.\+c}!setup@{setup}}
+\index{setup@{setup}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily void setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets up each node \mbox{\Hypertarget{ring_8c_a540b8ce2367b2cf4b32c8b8c7e9642fc}\label{ring_8c_a540b8ce2367b2cf4b32c8b8c7e9642fc}} 
+\index{ring.\+c@{ring.\+c}!smooth\+\_\+set\+\_\+motors@{smooth\+\_\+set\+\_\+motors}}
+\index{smooth\+\_\+set\+\_\+motors@{smooth\+\_\+set\+\_\+motors}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{smooth\+\_\+set\+\_\+motors()}{smooth\_set\_motors()}}
+{\footnotesize\ttfamily void smooth\+\_\+set\+\_\+motors (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{ccw,  }\item[{uint8\+\_\+t}]{cw }\end{DoxyParamCaption})}
+
+Sets motor speed smoothly 
+\begin{DoxyParams}{Parameters}
+{\em ccw} & \\
+\hline
+{\em cw} & \\
+\hline
+\end{DoxyParams}
+$<$ set up real value \mbox{\Hypertarget{ring_8c_a8807611add654242fa535446222a59f0}\label{ring_8c_a8807611add654242fa535446222a59f0}} 
+\index{ring.\+c@{ring.\+c}!update\+\_\+color@{update\+\_\+color}}
+\index{update\+\_\+color@{update\+\_\+color}!ring.\+c@{ring.\+c}}
+\subsubsection{\texorpdfstring{update\+\_\+color()}{update\_color()}}
+{\footnotesize\ttfamily void update\+\_\+color (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{payload }\end{DoxyParamCaption})}
+
+Change node color 
+\begin{DoxyParams}{Parameters}
+{\em payload} & the info for a given id \\
+\hline
+\end{DoxyParams}
