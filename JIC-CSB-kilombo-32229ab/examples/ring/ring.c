@@ -16,7 +16,7 @@
     REGISTER_USERDATA(USERDATA)
 #endif
 
-
+char enqueue_message(uint8_t );
 
 char isQueueFull()
 {
@@ -253,7 +253,7 @@ void recv_joining(uint8_t *payload)
         set_color(RGB(mydata->red, mydata->green, mydata->blue));
     }
 #ifdef SIMULATOR
-    printf("%d Left: %d Right: %d\n", mydata->my_id, mydata->my_left, mydata->my_right);
+    //printf("%d Left: %d Right: %d\n", mydata->my_id, mydata->my_left, mydata->my_right);
 #endif
 }
 
@@ -286,6 +286,23 @@ void recv_move(uint8_t *payload)
     } */
 }
 
+void receive_election(uint8_t *payload){
+    printf("%d receiving Election from %d\n", mydata->my_id, payload[MASTER]);
+    // if()
+    // if(mydata->my_id){}
+
+     mydata->isInitiator = TRUE; // forward m to the right
+}
+
+void send_election(){
+    //mydata->isInitiator == TRUE && COOPERATIVE?
+    // can probably get rid of guard for testing - Adam
+     if(!isQueueFull() && mydata->isInitiator == TRUE){
+         enqueue_message(ELECTION);
+         mydata->isInitiator = FALSE;
+     }
+ }
+
 
 void message_rx(message_t *m, distance_measurement_t *d)
 {
@@ -302,20 +319,25 @@ void message_rx(message_t *m, distance_measurement_t *d)
         switch (m->data[MSG])
         {
             case JOIN:
+                printf("The JOIN case");
                 recv_joining(m->data);
                 break;
             case MOVE:
+                printf("The MOVE case");
                 recv_move(m->data);
                 break;
-            // FROM NOTES - mark
+            
+            // Notes from professor
             case ELECTION:
-                printf("An election is being called!\n");
-//                if(mydata->my_id != mydata->my_left){
-                    receive_election();    
+                printf("The ELECTION case\n");
+                if (mydata->my_right == m->data[ID])
+                    receive_election(m->data); 
                 break;
-        //}              
-            // case ELECTED:
-        
+            case ELECTED:
+                printf("ELECTED Case.");
+            default:
+                printf("The DEFAULT case");
+                break;
         }
     }
 }
@@ -337,12 +359,15 @@ char enqueue_message(uint8_t m)
         mydata->message[mydata->tail].data[STATE] = mydata->state;
 
         //FROM NOTES - mark
-        mydata->message[mydata->tail].data[MIN_ID] = mydata->mid_id;
+        mydata->message[mydata->tail].data[MIN_ID] = mydata->min_id;
 
         //Sending Color Data 
 		mydata->message[mydata->tail].data[COLOR] = RGB(mydata->red,mydata->green,mydata->blue);
         //Sending Master Statues 
         mydata->message[mydata->tail].data[MASTER] = mydata->master;
+        if (m == ELECTION || m == ELECTED)
+                mydata->message[mydata->tail].data[MASTER] = mydata->min_id;
+
     
         mydata->message[mydata->tail].type = NORMAL;
         mydata->message[mydata->tail].crc = message_crc(&mydata->message[mydata->tail]);
@@ -353,21 +378,46 @@ char enqueue_message(uint8_t m)
     return 0;
 }
 
-// This is from the professor
-void send_election(){
-    //mydata->isInitiator == TRUE && 
-    if(!isQueueFull() && mydata->state == COOPERATIVE){
-         enqueue_message(ELECTION);
-         printf("Sending an Election\n");
-         mydata->isInitiator = TRUE;
-     }
- }
-
- void receive_election(){
-    printf("We are reaching rcv_Elecction\n");
-    if(mydata->my_id){}
+ void elected(message_t *m){
+     if(mydata->state == COOPERATIVE && m->data[STATE] == COOPERATIVE && m->data[MSG]==ELECTED){
+         mydata->min_id = m->data[SENDER];
+         mydata->master = 0;
+    // if(mydata->my_id){}
+         enqueue_message(ELECTED);
+    }
 }
 
+//mydata - v
+//m - w
+//mydata->min_id - m
+ void election_process(message_t *m){
+    //node sends electing(v) to successor
+    //send_election();??
+    //v sets m to the smallest id its seen
+    mydata->min_id = (m->data[ID]<mydata->my_id) ? m->data[ID] : mydata->my_id;
+    //if v receives a message ELECTING(w)
+    if(mydata->state == COOPERATIVE && m->data[STATE] == COOPERATIVE && m->data[MSG]==ELECTION){
+        if(m->data[ID] < mydata->min_id){
+            mydata->min_id = m->data[ID]; // sets m := w
+            enqueue_message(ELECTION); // v forwards election message of w to clockwise neighbor
+            mydata->master = 0; //v does not become leader
+        }
+
+        else if (m->data[ID] > mydata->min_id && mydata->state == COOPERATIVE)
+        {
+        	enqueue_message(ELECTION); // v forwards election message of w to clockwise neighbor
+        }
+        else if (mydata->my_id == m->data[ID])
+        {
+        	enqueue_message(ELECTED); // v forwards elected message of w to clockwise neighbor
+        }    
+    }
+    if (mydata->state == m->data[STATE] && m->data[MSG]==ELECTED)
+    {
+    	enqueue_message(ELECTED); // v forwards elected message of w to clockwise neighbor
+    	mydata->master = m->data[ID];
+    }
+}
 
 /**********************************/
 /**********************************/
@@ -390,11 +440,11 @@ void send_joining()
             mydata->my_right = mydata->nearest_neighbors[i].right_id;
             mydata->my_left = mydata->nearest_neighbors[i].id;
             enqueue_message(JOIN);
-
             //FROM NOTES - mark
             mydata->isInitiator = TRUE;
+
 #ifdef SIMULATOR
-            printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
+            //printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
 #endif
         }
     }
@@ -425,7 +475,7 @@ void send_move()
     }
     if (mydata->state == COOPERATIVE && !isQueueFull() && mydata->token && mydata->send_token <= mydata->now)
     {
-            // Sending
+        // Sending
         enqueue_message(MOVE);
         mydata->token = 0;
         mydata->blue = 0;
@@ -526,9 +576,25 @@ void remove_neighbor(nearest_neighbor_t lost)
     mydata->num_neighbors--;
 }
 
+void updateNeighbors(){
+    uint8_t i;
+    for (i = 0; i < mydata->num_neighbors; i++)
+    {
+        mydata->nearest_neighbors[i].message_recv_delay++;
+
+        if (mydata->nearest_neighbors[i].message_recv_delay > 100)
+        {
+            remove_neighbor(mydata->nearest_neighbors[i]);
+            break;
+        }
+    } 
+}
+
 // Adam: this is where most of the code is being executed
 void loop()
 {
+    delay(30);
+    //send_move();
     /*
      * If lonely
      * search for other
@@ -536,16 +602,24 @@ void loop()
      * joiner initiate send election
      * How is isIntiator handeled if send joining doesn't give anything back?
      */
-    // printf("%d Neighbors: %d\n", mydata->my_id, mydata->num_neighbors);
-    if(mydata->loneliness>0 || mydata->num_neighbors<1){
-        // printf("%d sent a JOIN\n", mydata->my_id);
+    if(mydata->loneliness>0 && mydata->num_neighbors<1){
         send_joining();
-        //if(mydata->num_neighbors>0){
-            send_election();
-        //}
-        // if(loneliness>100){
-        //     //I am my own leader.
-        // }
+        send_election();
+    }
+    send_sharing();
+    move(mydata->now);
+
+    //just moved code to a separate function
+    updateNeighbors();
+
+    // Master bot color switching
+    if (mydata->red == 3)
+    {
+        if (mydata->now % 100 == 0)
+        {
+            mydata->red = 0;
+            mydata->green = 3;
+        }
     }
     else{   //else it is already part of a group.
         // printf("&%d is joined with %d and %d\n", mydata->my_id, mydata->my_left, mydata->my_right);
@@ -568,11 +642,10 @@ void loop()
      * if nearest neighrbor doesnt exist increment loneliness.
      **/
     if(mydata->num_neighbors==0){
-        // printf("%d incr. loneliness\n", mydata->my_id);
         mydata->loneliness++;
         send_sharing();
     }else{
-        // printf("%d has neighbor\n", mydata->my_id);
+        printf("%d has neighbor\n", mydata->my_id);
     }
 }
 

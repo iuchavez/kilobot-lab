@@ -4,6 +4,9 @@
 #define SHARING_TIME 10
 #define TOKEN_TIME 103
 
+//Boolean Values
+#define TRUE 1
+#define FALSE 0 
 
 //PAYLOAD
 #define MSG 0
@@ -43,6 +46,7 @@ typedef enum { NULL_MSG,
     MOVE,
     ELECTION,
     ELECTED
+    // Define ELECTION among these
 } message_type;  // MESSAGES
 
 typedef enum {
@@ -83,7 +87,7 @@ typedef struct  {
 typedef struct
 {
     //FROM NOTES - mark
-    uint8_t mid_id;
+    uint8_t min_id;
     uint8_t isInitiator;
 
     uint8_t my_id;
