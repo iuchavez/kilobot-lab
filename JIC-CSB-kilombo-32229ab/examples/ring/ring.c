@@ -298,34 +298,35 @@ void message_rx(message_t *m, distance_measurement_t *d)
     {
         
 #ifdef SIMULATOR
-        //printf("%d Receives %d %d\n", mydata->my_id,  m->data[MSG], m->data[RECEIVER]);
+        printf("%d Receives %d %d\nSender ID: %d", mydata->my_id,  m->data[MSG], m->data[RECEIVER], m->data[ID]);
 #endif
    
         recv_sharing(m->data, dist);
         switch (m->data[MSG])
         {
             case JOIN:
-                printf("The JOIN case");
+                // printf("The JOIN case");
                 recv_joining(m->data);
                 break;
             case MOVE:
-                printf("The MOVE case");
+                // printf("The MOVE case");
                 recv_move(m->data);
                 break;
             
             // Notes from professor
             case ELECTION:
-                printf("The ELECTION case\n");
-                // receive_election();
-            //     data[ID] == myData->left{
-                receive_election(m->data);                // }
+                //printf("The ELECTION case\n");
+                printStatus();
+                if(m->data[ID] == mydata->my_left){
+                    receive_election(m->data);    
+                }            // }
                 break;
             case ELECTED:
                 printf("Someone was elected.");
                 receive_elected();
                 break;
             default:
-                printf("The DEFAULT case");
+                printf("The DEFAULT case\n");
                 break;
         }
     }
@@ -363,15 +364,17 @@ char enqueue_message(uint8_t m)
 void send_election(){
     //mydata->isInitiator == TRUE && 
     // can probably get rid of guard for testing - Adam
-    // if(!isQueueFull() && mydata->state == COOPERATIVE){
+    if(!isQueueFull() && mydata->isInitiator == TRUE){
          enqueue_message(ELECTION);
          mydata->isInitiator = FALSE;
-    //  }
+     }
  }
 
  void send_elected(){
-        printf("sending Elected\n");
-        enqueue_message(ELECTED);
+    printf("sending Elected\n");
+    // if(mydata->master == TRUE){
+    enqueue_message(ELECTED);
+    // }
  }
 
   void receive_elected(){
@@ -381,7 +384,10 @@ void send_election(){
 
  void receive_election(){
     printf("%d receiving Election\n", mydata->my_id);
-    // if(mydata->my_id){}
+    // if(mydata->my_id){
+        
+    // }
+    mydata->isInitiator=TRUE;
 }
 
 // This is from the professor
@@ -392,11 +398,7 @@ void send_election(){
 //     }
 // }
 
-// void receive_election(){
-//     //...
-//     //forward
-//     initiator = true;
-// }
+
 // void electing(uint8_t node_id){
 //     elected(node_id);
 //     //possibly do something with other nodes
@@ -467,7 +469,7 @@ void send_joining()
             mydata->isInitiator = TRUE;
 
 #ifdef SIMULATOR
-            printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
+            //printf("Sending Joining %d right=%d left=%d\n", mydata->my_id, mydata->my_right, mydata->my_left);
 #endif
         }
     }
@@ -612,24 +614,30 @@ void updateNeighbors(){
         }
     } 
 }
+void printStatus(){
+    printf("%d\nLoneliness: %d, Initiator: %d", mydata->my_id, mydata->loneliness, mydata->isInitiator);
+    printf("My Left ID: %d My Right ID: %d\n", mydata->my_left,mydata->my_right);
+}
 
 // Adam: this is where most of the code is being executed
 void loop()
 {
-    
+    delay(50);
     //send_move();
-    if(mydata->loneliness>0 && mydata->num_neighbors<1){
+    if(mydata->loneliness>0 || mydata->num_neighbors<1){
         // printf("%d sent a JOIN\n", mydata->my_id);
         send_joining();
-        //if(mydata->num_neighbors>0){
-        send_election();
-        printf("%d sending ELECTION\n", mydata->my_id);
-        //}
-        send_elected();
+        if(mydata->my_id == 133) printStatus();
+        send_sharing();
+        //if(mydata->my_id == 133) printStatus();
+        if(mydata->isInitiator == TRUE){
+            send_election();
+        }
         
+        // send_elected();  
     }
 
-    send_sharing();
+    // send_sharing();
     move(mydata->now);
 
     //just moved code to a separate function
@@ -718,9 +726,9 @@ void setup() {
     mydata->move_motion[1].motion = 5;
     mydata->move_motion[0].motion = LEFT;
     mydata->move_motion[0].motion = 2;
-    mydata->red = 0,
-    mydata->green = 0,
-    mydata->blue = 0,
+    mydata->red = 0;
+    mydata->green = 0;
+    mydata->blue = 0;
     mydata->send_token = 0;
 
     mydata->nullmessage.data[MSG] = NULL_MSG;
@@ -735,7 +743,7 @@ void setup() {
 
    
 #ifdef SIMULATOR
-    printf("Initializing %d %d\n", mydata->my_id, mydata->token);
+    //printf("Initializing %d %d\n", mydata->my_id, mydata->token);
 #endif
 
     mydata->message_sent = 1;
